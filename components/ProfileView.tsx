@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FlowerIcon, HistoryIcon, XIcon, PlusIcon, SparklesIcon } from './Icons';
+import { FlowerIcon, HistoryIcon, XIcon, PlusIcon, SparklesIcon, PetalIcon } from './Icons';
 import { FlowerTransaction } from '../types';
 
 const userProfile = {
@@ -15,6 +16,7 @@ const userProfile = {
   bio: 'Passionate about design, photography, and finding beauty in the everyday. My ideal weekend involves a good book, a long walk, and a cozy café.',
   interests: ['Design', 'Photography', 'Reading', 'Coffee', 'Nature'],
   flowerBalance: 125,
+  petalBalance: 500,
 };
 
 const flowerTransactions: FlowerTransaction[] = [
@@ -24,10 +26,10 @@ const flowerTransactions: FlowerTransaction[] = [
   { id: 4, recipientName: 'Théo', recipientAvatar: 'https://picsum.photos/seed/man2/100/100', amount: 20, date: '2024-07-15T22:15:00Z' },
 ];
 
-const flowerPacks = [
-  { amount: 50, price: '4.99€', popular: false },
-  { amount: 120, price: '9.99€', popular: true },
-  { amount: 300, price: '21.99€', popular: false },
+const petalPacks = [
+  { amount: 100, price: '1.99€', popular: false },
+  { amount: 550, price: '9.99€', popular: true },
+  { amount: 1200, price: '19.99€', popular: false },
 ];
 
 const FlowerHistoryModal: React.FC<{ transactions: FlowerTransaction[]; onClose: () => void; }> = ({ transactions, onClose }) => {
@@ -62,8 +64,8 @@ const FlowerHistoryModal: React.FC<{ transactions: FlowerTransaction[]; onClose:
                     {new Date(tx.date).toLocaleString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
-                <div className="ml-auto text-right font-bold text-rose-500">
-                  -{tx.amount} <span className="text-xl">💐</span>
+                <div className="ml-auto text-right font-bold text-rose-500 flex items-center">
+                  -{tx.amount} <FlowerIcon className="w-6 h-6" />
                 </div>
               </div>
             ))
@@ -80,12 +82,12 @@ const FlowerHistoryModal: React.FC<{ transactions: FlowerTransaction[]; onClose:
   );
 };
 
-const BuyFlowersModal: React.FC<{
+const BuyPetalsModal: React.FC<{
     onClose: () => void;
     onBuy: (amount: number) => void;
 }> = ({ onClose, onBuy }) => {
     const [customAmount, setCustomAmount] = useState('');
-    const customPrice = (Number(customAmount) * 0.1).toFixed(2);
+    const customPrice = (Number(customAmount) * 0.02).toFixed(2);
 
     return (
         <motion.div
@@ -103,12 +105,12 @@ const BuyFlowersModal: React.FC<{
                 <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
                     <XIcon className="w-6 h-6" />
                 </button>
-                <FlowerIcon className="w-16 h-16 text-rose-400 mx-auto" />
-                <h2 className="font-display text-2xl font-bold mt-4 text-gray-800">Boutique de Fleurs</h2>
-                <p className="text-gray-500 mt-2 mb-6">Rechargez votre solde pour envoyer plus de cadeaux.</p>
+                <PetalIcon className="w-16 h-16 text-rose-400 mx-auto" />
+                <h2 className="font-display text-2xl font-bold mt-4 text-gray-800">Boutique de Pétales</h2>
+                <p className="text-gray-500 mt-2 mb-6">Rechargez votre solde pour débloquer des fonctionnalités.</p>
                 
                 <div className="space-y-3">
-                    {flowerPacks.map(pack => (
+                    {petalPacks.map(pack => (
                         <div
                             key={pack.amount}
                             className="relative w-full text-left p-4 rounded-xl border-2 font-semibold bg-white border-gray-300"
@@ -120,7 +122,7 @@ const BuyFlowersModal: React.FC<{
                             )}
                             <div className="flex justify-between items-center">
                                 <div>
-                                    <span className="text-xl">💐 {pack.amount} Fleurs</span>
+                                    <span className="text-xl flex items-center gap-1"><PetalIcon className="w-6 h-6" /> {pack.amount} Pétales</span>
                                     <p className="text-sm text-gray-500 font-normal">{pack.price}</p>
                                 </div>
                                 <button
@@ -174,13 +176,14 @@ const BuyFlowersModal: React.FC<{
 
 const ProfileView: React.FC = () => {
   const [showHistoryModal, setShowHistoryModal] = useState(false);
-  const [showBuyFlowersModal, setShowBuyFlowersModal] = useState(false);
+  const [showBuyPetalsModal, setShowBuyPetalsModal] = useState(false);
   const [flowerBalance, setFlowerBalance] = useState(userProfile.flowerBalance);
+  const [petalBalance, setPetalBalance] = useState(userProfile.petalBalance);
 
-  const handleBuyFlowers = (amount: number) => {
+  const handleBuyPetals = (amount: number) => {
     if (amount <= 0) return;
-    setFlowerBalance(prev => prev + amount);
-    setShowBuyFlowersModal(false);
+    setPetalBalance(prev => (prev || 0) + amount);
+    setShowBuyPetalsModal(false);
   };
 
   return (
@@ -195,12 +198,12 @@ const ProfileView: React.FC = () => {
           <h1 className="font-display text-4xl font-bold">{userProfile.name}, {userProfile.age}</h1>
           
           <div className="my-6">
-            <h2 className="font-semibold text-lg text-gray-800 mb-2">About me</h2>
+            <h2 className="font-semibold text-lg text-gray-800 mb-2">À propos de moi</h2>
             <p className="text-gray-600">{userProfile.bio}</p>
           </div>
           
           <div className="my-6">
-            <h2 className="font-semibold text-lg text-gray-800 mb-2">Interests</h2>
+            <h2 className="font-semibold text-lg text-gray-800 mb-2">Centres d'intérêt</h2>
             <div className="flex flex-wrap gap-2">
               {userProfile.interests.map(interest => (
                 <span key={interest} className="bg-rose-100 text-rose-800 text-sm font-medium px-3 py-1 rounded-full">
@@ -210,35 +213,51 @@ const ProfileView: React.FC = () => {
             </div>
           </div>
 
-          <div className="my-6">
-            <div className="flex justify-between items-center mb-3">
-              <h2 className="font-semibold text-lg text-gray-800">Vos Fleurs</h2>
-              <button 
-                onClick={() => setShowHistoryModal(true)}
-                className="flex items-center gap-1.5 text-sm font-semibold text-rose-600 bg-rose-100 hover:bg-rose-200 px-3 py-1.5 rounded-lg transition-colors active:scale-95"
-              >
-                <HistoryIcon className="w-4 h-4" />
-                Historique
-              </button>
+          <div className="my-6 space-y-4">
+            {/* Petal Balance */}
+            <div>
+              <h2 className="font-semibold text-lg text-gray-800 mb-2">Vos Pétales</h2>
+              <div className="flex items-center justify-between bg-gradient-to-r from-violet-50 to-purple-50 p-4 rounded-xl">
+                  <div className="flex items-center gap-2">
+                      <PetalIcon className="w-8 h-8" />
+                      <div>
+                          <span className="text-2xl font-bold text-gray-800">{petalBalance}</span>
+                          <span className="text-sm text-gray-600 ml-1">pétales</span>
+                      </div>
+                  </div>
+                  <button 
+                      onClick={() => setShowBuyPetalsModal(true)}
+                      className="bg-violet-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-violet-600 transition shadow-md active:scale-95"
+                  >
+                      Acheter
+                  </button>
+              </div>
             </div>
-            <div className="flex items-center justify-between bg-gradient-to-r from-rose-50 to-amber-50 p-4 rounded-xl">
-                <div className="flex items-center gap-2">
-                    <FlowerIcon className="w-8 h-8 text-rose-500" />
-                    <div>
-                        <span className="text-2xl font-bold text-gray-800">{flowerBalance}</span>
-                        <span className="text-sm text-gray-600 ml-1">fleurs</span>
-                    </div>
-                    <button 
-                        onClick={() => setShowBuyFlowersModal(true)}
-                        className="p-2 bg-white/70 rounded-full text-rose-500 hover:bg-white shadow-sm transition-all active:scale-90"
-                        aria-label="Acheter des fleurs"
-                    >
-                        <PlusIcon className="w-5 h-5" />
-                    </button>
-                </div>
-                <button className="bg-rose-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-rose-600 transition shadow-md active:scale-95">
-                    Retirer
+
+            {/* Flower Balance */}
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <h2 className="font-semibold text-lg text-gray-800">Vos Fleurs Reçues</h2>
+                <button 
+                  onClick={() => setShowHistoryModal(true)}
+                  className="flex items-center gap-1.5 text-sm font-semibold text-rose-600 bg-rose-100 hover:bg-rose-200 px-3 py-1.5 rounded-lg transition-colors active:scale-95"
+                >
+                  <HistoryIcon className="w-4 h-4" />
+                  Historique d'envoi
                 </button>
+              </div>
+              <div className="flex items-center justify-between bg-gradient-to-r from-rose-50 to-amber-50 p-4 rounded-xl">
+                  <div className="flex items-center gap-2">
+                      <FlowerIcon className="w-8 h-8" />
+                      <div>
+                          <span className="text-2xl font-bold text-gray-800">{flowerBalance}</span>
+                          <span className="text-sm text-gray-600 ml-1">fleurs</span>
+                      </div>
+                  </div>
+                  <button className="bg-rose-500 text-white font-bold py-2 px-5 rounded-lg hover:bg-rose-600 transition shadow-md active:scale-95">
+                      Retirer
+                  </button>
+              </div>
             </div>
           </div>
 
@@ -252,10 +271,10 @@ const ProfileView: React.FC = () => {
           
           <div className="flex space-x-4 mt-6">
             <button className="flex-1 bg-gray-200 text-gray-800 font-bold py-3 rounded-lg hover:bg-gray-300 transition">
-              Edit Profile
+              Modifier le Profil
             </button>
             <button className="flex-1 bg-gray-200 text-gray-800 font-bold py-3 rounded-lg hover:bg-gray-300 transition">
-              Settings
+              Paramètres
             </button>
           </div>
         </div>
@@ -269,10 +288,10 @@ const ProfileView: React.FC = () => {
         )}
       </AnimatePresence>
       <AnimatePresence>
-        {showBuyFlowersModal && (
-            <BuyFlowersModal
-                onClose={() => setShowBuyFlowersModal(false)}
-                onBuy={handleBuyFlowers}
+        {showBuyPetalsModal && (
+            <BuyPetalsModal
+                onClose={() => setShowBuyPetalsModal(false)}
+                onBuy={handleBuyPetals}
             />
         )}
       </AnimatePresence>

@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { GoogleIcon, HeartIcon } from './Icons';
+import { GoogleIcon, LogoIcon } from './Icons';
 
 interface LoginViewProps {
   onLogin: () => void;
@@ -46,9 +46,9 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
 
       <div className="relative h-screen w-full flex flex-col justify-end items-start p-8 sm:p-12 pb-16 text-white">
         <div className="w-full max-w-lg content-fade-in">
-          <div className="flex items-center gap-3 mb-4">
-            <HeartIcon className="w-9 h-9 text-rose-400" />
-            <h1 className="font-display text-7xl font-bold">Fleur</h1>
+          <div className="flex items-center gap-4 mb-4">
+            <LogoIcon className="w-12 h-12 text-rose-400" />
+            <h1 className="font-display text-7xl font-bold">Aura</h1>
           </div>
           <p className="mt-4 text-3xl font-light">L'art de la rencontre.</p>
           <p className="mt-4 text-md text-gray-200 max-w-md">

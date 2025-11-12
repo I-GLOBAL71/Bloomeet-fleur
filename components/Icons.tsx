@@ -5,6 +5,18 @@ interface IconProps {
   className?: string;
 }
 
+/*
+  REPLACE THIS WITH YOUR NEW LOGO SVG
+  This is the main logo for the application.
+*/
+export const LogoIcon: React.FC<IconProps> = ({ className }) => (
+    <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z" stroke="currentColor" strokeWidth="1.5"/>
+        <path d="M12 3V1M21 12H23M12 21V23M3 12H1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+);
+
 export const CompassIcon: React.FC<IconProps> = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <circle cx="12" cy="12" r="10"></circle>
@@ -181,21 +193,24 @@ export const EmojiIcon: React.FC<IconProps> = ({ className }) => (
 );
 
 export const FlowerIcon: React.FC<IconProps> = ({ className }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
-        <path d="M5.12,12.28c0.6-2.45,2-4.6,3.88-6.27" />
-        <path d="M18.88,12.28c-0.6-2.45-2-4.6-3.88-6.27" />
-        <path d="M9,5.01c-2.27,1.83-3.88,4.72-3.88,7.27" />
-        <path d="M15,5.01c2.27,1.83,3.88,4.72,3.88,7.27" />
-        <path d="M12,2c-2.02,0-3.88,0.96-5.12,2.55" />
-        <path d="M12,2c2.02,0,3.88,0.96,5.12,2.55" />
-        <path d="M12,22c2.02,0,3.88-0.96,5.12-2.55" />
-        <path d="M12,22c-2.02,0-3.88-0.96-5.12-2.55" />
-        <path d="M5.12,12.28c-0.78,2.15-0.78,4.59,0,6.74" />
-        <path d="M18.88,12.28c0.78,2.15,0.78,4.59,0,6.74" />
-        <path d="M9,19.02c-2.11-1.68-3.22-4.24-2.73-6.74" />
-        <path d="M15,19.02c2.11-1.68,3.22-4.24,2.73-6.74" />
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" className={className}>
+    <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fontSize="32">🌹</text>
+  </svg>
+);
+
+export const PetalIcon: React.FC<IconProps> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 36 36" className={className}>
+    <text x="50%" y="50%" dominantBaseline="central" textAnchor="middle" fontSize="32">🌸</text>
+  </svg>
+);
+
+export const LockIcon: React.FC<IconProps> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
     </svg>
 );
+
 
 export const PhoneIcon: React.FC<IconProps> = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
@@ -221,5 +236,18 @@ export const UndoIcon: React.FC<IconProps> = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <path d="M3 7v6h6"></path>
     <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+  </svg>
+);
+
+export const SearchIcon: React.FC<IconProps> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="11" cy="11" r="8"></circle>
+    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+);
+
+export const ChevronDownIcon: React.FC<IconProps> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <polyline points="6 9 12 15 18 9"></polyline>
   </svg>
 );

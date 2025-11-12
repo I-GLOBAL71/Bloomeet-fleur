@@ -16,6 +16,7 @@ export interface UserProfile {
   photos: string[];
   distance: number;
   flowerBalance?: number;
+  petalBalance?: number;
 }
 
 export interface EventAttendee {

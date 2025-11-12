@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { UserProfile } from '../types';
@@ -220,6 +219,11 @@ const DiscoveryView: React.FC = () => {
   }, [advanceQueue, profiles]);
 
   const handleDragStart = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    // Prevent drag from starting if the click is on the flower button
+    if ((e.target as HTMLElement).closest('button[aria-label="Envoyer des fleurs"]')) {
+      return;
+    }
+
     if (!cardRef.current) return;
     
     dragState.isDragging = true;
@@ -380,9 +384,7 @@ const DiscoveryView: React.FC = () => {
                                     e.stopPropagation();
                                     setShowSendFlowerModal(true);
                                 }}
-                                onMouseDown={(e) => e.stopPropagation()}
-                                onTouchStart={(e) => e.stopPropagation()}
-                                className="p-3 bg-white/20 rounded-full text-white backdrop-blur-sm hover:bg-white/30 transition-colors active:scale-90"
+                                className="p-3 bg-white/20 rounded-full text-white backdrop-blur-sm hover:bg-white/30 transition-colors active:scale-90 pointer-events-auto"
                                 aria-label="Envoyer des fleurs"
                              >
                                 <FlowerIcon className="w-7 h-7" />

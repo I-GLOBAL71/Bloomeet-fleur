@@ -429,8 +429,8 @@ const EventDetailView: React.FC<{
             setShareError(null);
             try {
                 await navigator.share({
-                    title: `Événement Fleur : ${event.title}`,
-                    text: `Rejoins-moi pour "${event.title}" le ${event.date} ! J'ai trouvé cet événement sur Fleur. #FleurApp`,
+                    title: `Événement Aura : ${event.title}`,
+                    text: `Rejoins-moi pour "${event.title}" le ${event.date} ! J'ai trouvé cet événement sur Aura. #AuraApp`,
                     url: window.location.origin,
                 });
             } catch (error) {
