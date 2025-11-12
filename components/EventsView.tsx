@@ -414,12 +414,6 @@ const EventDetailView: React.FC<{
         setShowReminderOptions(false);
     };
 
-    const reminderOptions = [
-        { label: '30 minutes avant', value: '30' },
-        { label: '1 heure avant', value: '60' },
-        { label: '1 jour avant', value: '1440' }, // 24 * 60
-    ];
-
     const handleShare = async () => {
         if (navigator.share) {
             try {
@@ -433,6 +427,12 @@ const EventDetailView: React.FC<{
             }
         }
     };
+
+    const reminderOptions = [
+        { label: '30 minutes avant', value: '30' },
+        { label: '1 heure avant', value: '60' },
+        { label: '1 jour avant', value: '1440' }, // 24 * 60
+    ];
 
     return (
         <div className="absolute inset-0 bg-gray-50 z-20 overflow-y-auto pb-20 slide-in-right">
@@ -588,7 +588,9 @@ const ConfirmationModal: React.FC<{
     message: string;
     onConfirm: () => void;
     onCancel: () => void;
-}> = ({ title, message, onConfirm, onCancel }) => (
+    confirmText?: string;
+    confirmButtonClass?: string;
+}> = ({ title, message, onConfirm, onCancel, confirmText = "Supprimer", confirmButtonClass = "bg-red-600 hover:bg-red-700" }) => (
     <div className="fixed inset-0 bg-black/60 z-50 flex justify-center items-center p-4 fade-in">
         <div className="bg-white rounded-2xl p-8 w-full max-w-sm text-center shadow-xl slide-in-right">
             <h2 className="font-display text-2xl font-bold mb-3 text-gray-800">{title}</h2>
@@ -597,8 +599,8 @@ const ConfirmationModal: React.FC<{
                 <button onClick={onCancel} className="flex-1 py-3 px-4 rounded-lg text-gray-700 bg-gray-200 font-semibold hover:bg-gray-300 transition">
                     Annuler
                 </button>
-                <button onClick={onConfirm} className="flex-1 py-3 px-4 rounded-lg text-white bg-red-600 font-semibold hover:bg-red-700 transition">
-                    Supprimer
+                <button onClick={onConfirm} className={`flex-1 py-3 px-4 rounded-lg text-white font-semibold transition ${confirmButtonClass}`}>
+                    {confirmText}
                 </button>
             </div>
         </div>
@@ -654,6 +656,47 @@ const CustomizeModal: React.FC<{
                 </div>
 
                 <button onClick={onClose} className="w-full py-3 px-4 rounded-lg text-white bg-rose-500 font-semibold hover:bg-rose-600 transition">Terminé</button>
+            </div>
+        </div>
+    );
+};
+
+const MetricCard: React.FC<{ title: string; value: string | number; icon: React.ReactNode }> = ({ title, value, icon }) => (
+    <div className="bg-white p-4 rounded-xl shadow-md flex items-center">
+        <div className="p-3 bg-rose-100 rounded-full mr-4">
+            {icon}
+        </div>
+        <div>
+            <p className="text-3xl font-bold text-gray-800">{value}</p>
+            <p className="text-sm font-medium text-gray-500">{title}</p>
+        </div>
+    </div>
+);
+
+const EventsDashboard: React.FC<{ data: { totalEvents: number; totalAttendees: number; popularEventTypes: { name: string, count: number }[] } }> = ({ data }) => {
+    return (
+        <div className="mb-8 p-4 bg-gray-50 rounded-2xl">
+            <h2 className="font-display text-2xl font-bold text-gray-800 mb-4">Tableau de bord</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <MetricCard title="Événements créés" value={data.totalEvents} icon={<CalendarIcon className="w-6 h-6 text-rose-500" />} />
+                <MetricCard title="Participants uniques" value={data.totalAttendees} icon={<UserIcon className="w-6 h-6 text-rose-500" />} />
+            </div>
+
+            <h3 className="font-semibold text-lg text-gray-800 mb-2">Types d'événements populaires</h3>
+            <div className="w-full h-64 bg-white p-4 rounded-xl shadow-md">
+                <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                        data={data.popularEventTypes}
+                        layout="vertical"
+                        margin={{ top: 5, right: 20, left: 20, bottom: 5 }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e0e0e0" />
+                        <XAxis type="number" allowDecimals={false} tick={{ fill: '#6b7280', fontSize: 12 }} axisLine={false} tickLine={false} />
+                        <YAxis type="category" dataKey="name" width={80} tick={{ fill: '#374151', fontSize: 12, fontWeight: 'bold' }} axisLine={false} tickLine={false} />
+                        <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(244, 63, 94, 0.1)' }}/>
+                        <Bar dataKey="count" name="Nombre d'événements" fill="#f43f5e" radius={[0, 4, 4, 0]} barSize={20} />
+                    </BarChart>
+                </ResponsiveContainer>
             </div>
         </div>
     );
@@ -778,6 +821,43 @@ const EventsView: React.FC = () => {
         setShowInviteModal(false);
     };
     
+    const dashboardData = useMemo(() => {
+        const totalEvents = events.length;
+
+        const allAttendees = events.flatMap(event => event.attendees);
+        const uniqueAttendeeIds = new Set(allAttendees.map(attendee => attendee.id));
+        const totalAttendees = uniqueAttendeeIds.size;
+
+        const eventTypes: { [key: string]: number } = {};
+        const keywords: { [key: string]: string[] } = {
+            'Plein air': ['pique-nique', 'randonnée', 'plein air', 'seine', 'parc'],
+            'Gastronomie': ['dégustation', 'vin', 'nourriture', 'recettes', 'restaurant', 'atelier'],
+            'Culture': ['cinéma', 'photographie', 'art', 'musique', 'musée', 'concert'],
+            'Soirée': ['soirée', 'bar', 'verre', 'fête'],
+        };
+
+        events.forEach(event => {
+            const title = event.title.toLowerCase();
+            let categorized = false;
+            for (const type in keywords) {
+                if (keywords[type].some(keyword => title.includes(keyword))) {
+                    eventTypes[type] = (eventTypes[type] || 0) + 1;
+                    categorized = true;
+                    break; // categorize only once
+                }
+            }
+            if (!categorized) {
+                eventTypes['Autre'] = (eventTypes['Autre'] || 0) + 1;
+            }
+        });
+
+        const popularEventTypes = Object.entries(eventTypes)
+            .map(([name, count]) => ({ name, count }))
+            .sort((a, b) => b.count - a.count);
+
+        return { totalEvents, totalAttendees, popularEventTypes };
+    }, [events]);
+    
     const filteredEvents = useMemo(() => {
         const now = new Date();
         switch (activeTab) {
@@ -825,6 +905,8 @@ const EventsView: React.FC = () => {
                     </div>
                 </div>
 
+                <EventsDashboard data={dashboardData} />
+
                 <div className="flex justify-center gap-2 my-6">
                     <TabButton label="À venir" isActive={activeTab === 'upcoming'} onClick={() => setActiveTab('upcoming')} />
                     <TabButton label="Passés" isActive={activeTab === 'past'} onClick={() => setActiveTab('past')} />
@@ -840,7 +922,7 @@ const EventsView: React.FC = () => {
                                         <img src={event.image} alt={event.title} className="w-full h-40 object-cover" />
                                         {event.joiningFee != null && (
                                             <span className={`absolute top-3 right-3 text-xs font-bold px-2 py-1 rounded-full text-white ${event.joiningFee > 0 ? 'bg-blue-500' : 'bg-green-500'}`}>
-                                                {event.joiningFee > 0 ? `${event.joiningFee.toLocaleString('fr-FR')} €` : 'GRATUIT'}
+                                                {event.joiningFee > 0 ? event.joiningFee.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' }) : 'GRATUIT'}
                                             </span>
                                         )}
                                     </div>

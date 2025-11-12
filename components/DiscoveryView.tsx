@@ -1,20 +1,79 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { UserProfile } from '../types';
 import { HeartIcon, XIcon, StarIcon } from './Icons';
 
 const mockProfiles: UserProfile[] = [
-  { id: 1, name: 'Chloé', age: 26, bio: 'Loves hiking, art galleries, and trying new recipes. Looking for a genuine connection.', interests: ['Hiking', 'Art', 'Cooking'], photos: ['https://picsum.photos/seed/woman1/800/1200'], distance: 5 },
-  { id: 2, name: 'Lucas', age: 29, bio: 'Software engineer by day, musician by night. My dog is my best friend. Let\'s grab a coffee.', interests: ['Music', 'Dogs', 'Tech'], photos: ['https://picsum.photos/seed/man1/800/1200'], distance: 2 },
-  { id: 3, name: 'Jasmine', age: 24, bio: 'Just moved to the city! Exploring every corner. Big foodie and film enthusiast.', interests: ['Food', 'Movies', 'Travel'], photos: ['https://picsum.photos/seed/woman2/800/1200'], distance: 10 },
+  { id: 1, name: 'Chloé', age: 26, bio: 'Loves hiking, art galleries, and trying new recipes. Looking for a genuine connection.', interests: ['Hiking', 'Art', 'Cooking'], photos: ['https://picsum.photos/seed/woman1/800/1200', 'https://picsum.photos/seed/w1p2/800/1200', 'https://picsum.photos/seed/w1p3/800/1200'], distance: 5 },
+  { id: 2, name: 'Lucas', age: 29, bio: 'Software engineer by day, musician by night. My dog is my best friend. Let\'s grab a coffee.', interests: ['Music', 'Dogs', 'Tech'], photos: ['https://picsum.photos/seed/man1/800/1200', 'https://picsum.photos/seed/m1p2/800/1200'], distance: 2 },
+  { id: 3, name: 'Jasmine', age: 24, bio: 'Just moved to the city! Exploring every corner. Big foodie and film enthusiast.', interests: ['Food', 'Movies', 'Travel'], photos: ['https://picsum.photos/seed/woman2/800/1200', 'https://picsum.photos/seed/w2p2/800/1200', 'https://picsum.photos/seed/w2p3/800/1200', 'https://picsum.photos/seed/w2p4/800/1200'], distance: 10 },
   { id: 4, name: 'Théo', age: 27, bio: 'Fitness enthusiast and bookworm. Believer in balancing mind and body.', interests: ['Fitness', 'Reading', 'Philosophy'], photos: ['https://picsum.photos/seed/man2/800/1200'], distance: 8 },
-  { id: 5, name: 'Inès', age: 30, bio: 'Entrepreneur with a passion for sustainability and travel. Searching for an adventure partner.', interests: ['Business', 'Sustainability', 'Travel'], photos: ['https://picsum.photos/seed/woman3/800/1200'], distance: 3 },
+  { id: 5, name: 'Inès', age: 30, bio: 'Entrepreneur with a passion for sustainability and travel. Searching for an adventure partner.', interests: ['Business', 'Sustainability', 'Travel'], photos: ['https://picsum.photos/seed/woman3/800/1200', 'https://picsum.photos/seed/w3p2/800/1200'], distance: 3 },
 ];
 
 const SWIPE_THRESHOLD = 100;
 const ANIMATION_DURATION = 300;
 
+const ProfileDetailModal: React.FC<{ profile: UserProfile; onClose: () => void; }> = ({ profile, onClose }) => {
+    return (
+        <motion.div
+            className="fixed inset-0 bg-black/60 z-30 flex justify-center items-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+        >
+            <motion.div
+                className="relative w-full max-w-sm h-[85vh] bg-white rounded-2xl overflow-hidden shadow-2xl"
+                initial={{ scale: 0.9, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                onClick={e => e.stopPropagation()}
+            >
+                <div className="h-full w-full overflow-y-auto">
+                    {/* Photo Gallery */}
+                    <div className="grid grid-cols-2 gap-2 p-2">
+                        {profile.photos.map((photo, index) => (
+                            <div
+                                key={index}
+                                className={`rounded-xl overflow-hidden ${
+                                    index === 0 ? 'col-span-2 aspect-[4/5]' : 'aspect-square'
+                                }`}
+                            >
+                                <img src={photo} alt={`${profile.name} photo ${index + 1}`} className="w-full h-full object-cover" />
+                            </div>
+                        ))}
+                    </div>
+                    
+                    {/* Details */}
+                    <div className="p-6 pt-4">
+                        <h2 className="font-display text-4xl font-bold">{profile.name}, {profile.age}</h2>
+                        <p className="mt-4 text-lg text-gray-700">{profile.bio}</p>
+                        
+                        <div className="mt-6">
+                            <h3 className="font-semibold text-lg text-gray-800">Centres d'intérêt</h3>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                                {profile.interests.map(interest => (
+                                    <span key={interest} className="bg-rose-100 text-rose-800 text-sm font-medium px-3 py-1 rounded-full">{interest}</span>
+                                ))}
+                            </div>
+                        </div>
+                         <p className="text-sm text-gray-500 mt-6">{profile.distance} km</p>
+                    </div>
+                </div>
+                
+                <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/30 text-white rounded-full hover:bg-black/50 transition-colors focus:outline-none z-10">
+                    <XIcon className="w-6 h-6" />
+                </button>
+            </motion.div>
+        </motion.div>
+    );
+};
+
 const DiscoveryView: React.FC = () => {
   const [profiles, setProfiles] = useState(mockProfiles);
+  const [selectedProfile, setSelectedProfile] = useState<UserProfile | null>(null);
   const [cardStyle, setCardStyle] = useState<React.CSSProperties>({});
   
   const dragState = useRef({
@@ -97,6 +156,17 @@ const DiscoveryView: React.FC = () => {
     window.removeEventListener('mouseup', handleDragEnd);
     window.removeEventListener('touchend', handleDragEnd);
     
+    const wasClick = Math.abs(dragState.deltaX) < 10;
+
+    if (wasClick) {
+        setSelectedProfile(profiles[0]);
+        setCardStyle({
+            transform: 'translateX(0px) rotate(0deg)',
+            transition: `transform 0.1s ease-out`,
+        });
+        return;
+    }
+    
     if (Math.abs(dragState.deltaX) > SWIPE_THRESHOLD) {
       handleSwipe(dragState.deltaX > 0 ? 'right' : 'left');
     } else {
@@ -105,7 +175,7 @@ const DiscoveryView: React.FC = () => {
         transition: `transform ${ANIMATION_DURATION}ms cubic-bezier(0.175, 0.885, 0.32, 1.275)`,
       });
     }
-  }, [dragState, handleSwipe, handleDragMove]);
+  }, [dragState, handleSwipe, handleDragMove, profiles]);
 
 
   const currentProfile = profiles[0];
@@ -158,7 +228,7 @@ const DiscoveryView: React.FC = () => {
                   <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent p-6 text-white flex flex-col justify-end">
                       <h2 className="font-display text-4xl font-bold">{currentProfile.name}, {currentProfile.age}</h2>
                       <p className="mt-2 text-lg line-clamp-2">{currentProfile.bio}</p>
-                      <p className="text-sm opacity-80">{currentProfile.distance} km away</p>
+                      <p className="text-sm opacity-80">{currentProfile.distance} km</p>
                   </div>
               </div>
             </>
@@ -178,6 +248,11 @@ const DiscoveryView: React.FC = () => {
             </button>
           </div>
       )}
+      <AnimatePresence>
+        {selectedProfile && (
+            <ProfileDetailModal key={selectedProfile.id} profile={selectedProfile} onClose={() => setSelectedProfile(null)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 };

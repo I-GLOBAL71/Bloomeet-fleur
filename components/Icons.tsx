@@ -148,3 +148,11 @@ export const PartyPopperIcon: React.FC<IconProps> = ({ className }) => (
         <path d="m6 8 3-3"></path>
     </svg>
 );
+
+export const LightbulbIcon: React.FC<IconProps> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M9 18h6" />
+        <path d="M10 22h4" />
+        <path d="M12 2a7 7 0 0 0-7 7c0 3.03 1.13 4.58 2.65 6.15a1 1 0 0 0 .65.35h6.4a1 1 0 0 0 .65-.35C17.87 13.58 19 12.03 19 9a7 7 0 0 0-7-7z" />
+    </svg>
+);

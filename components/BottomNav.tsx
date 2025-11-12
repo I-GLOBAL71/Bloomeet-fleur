@@ -15,7 +15,7 @@ const NavItem: React.FC<{
 }> = ({ icon, isActive, onClick }) => {
   const activeClass = isActive ? 'text-rose-500' : 'text-gray-400';
   return (
-    <button onClick={onClick} className={`p-2 transition-transform duration-200 ease-in-out transform hover:scale-110 ${activeClass}`}>
+    <button onClick={onClick} className={`p-2 transition-transform duration-200 ease-in-out transform hover:scale-110 active:scale-95 ${activeClass}`}>
       {icon}
     </button>
   );
