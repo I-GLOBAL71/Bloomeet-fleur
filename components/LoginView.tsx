@@ -1,53 +1,76 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleIcon, HeartIcon } from './Icons';
 
 interface LoginViewProps {
   onLogin: () => void;
 }
 
-const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
-  return (
-    <div className="min-h-screen w-full flex flex-col justify-center items-center bg-gradient-to-br from-rose-100 via-orange-100 to-yellow-100 p-4">
-      <div className="text-center w-full max-w-md">
-        <div className="inline-block p-4 bg-white/50 rounded-full shadow-lg mb-6">
-          <HeartIcon className="w-12 h-12 text-rose-500" />
-        </div>
-        <h1 className="font-display text-6xl font-bold text-rose-800">Fleur</h1>
-        <p className="mt-4 text-lg text-gray-600">Find your person, delicately.</p>
-        
-        <div className="mt-12 space-y-4">
-          <button
-            onClick={onLogin}
-            className="w-full flex items-center justify-center gap-3 bg-white text-gray-700 font-semibold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 transform hover:-translate-y-1"
-          >
-            <GoogleIcon className="w-6 h-6" />
-            Continue with Google
-          </button>
-          
-          <div className="flex items-center my-6">
-            <hr className="flex-grow border-gray-300" />
-            <span className="px-4 text-gray-500">or</span>
-            <hr className="flex-grow border-gray-300" />
-          </div>
+const backgroundImages = [
+  'https://images.pexels.com/photos/1766933/pexels-photo-1766933.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+  'https://images.pexels.com/photos/3299386/pexels-photo-3299386.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+  'https://images.pexels.com/photos/3783471/pexels-photo-3783471.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+  'https://images.pexels.com/photos/1024989/pexels-photo-1024989.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+];
 
-          <form onSubmit={(e) => { e.preventDefault(); onLogin(); }}>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="w-full bg-white/70 text-gray-800 placeholder-gray-500 py-3 px-4 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-rose-400 transition"
-            />
-            <button
-              type="submit"
-              className="mt-4 w-full bg-gradient-to-r from-rose-500 to-orange-400 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 transform hover:-translate-y-1"
-            >
-              Send Magic Link
-            </button>
-          </form>
+const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % backgroundImages.length);
+    }, 7000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="min-h-screen w-full bg-black relative overflow-hidden">
+      {backgroundImages.map((src, index) => (
+        <div
+          key={src}
+          className="absolute inset-0 h-full w-full bg-cover bg-center transition-opacity duration-[2000ms] ease-in-out"
+          style={{ 
+            backgroundImage: `url(${src})`,
+            opacity: index === currentImage ? 1 : 0,
+          }}
+        >
+          <div className="w-full h-full bg-image-pan" style={{
+             backgroundImage: `url(${src})`,
+             backgroundSize: 'cover',
+             backgroundPosition: 'center',
+          }}/>
         </div>
-        <p className="mt-8 text-xs text-gray-500">
-          By continuing, you agree to our <a href="#" className="underline">Terms of Service</a> and <a href="#" className="underline">Privacy Policy</a>.
-        </p>
+      ))}
+      
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+
+      <div className="relative h-screen w-full flex flex-col justify-end items-start p-8 sm:p-12 pb-16 text-white">
+        <div className="w-full max-w-lg content-fade-in">
+          <div className="flex items-center gap-3 mb-4">
+            <HeartIcon className="w-9 h-9 text-rose-400" />
+            <h1 className="font-display text-7xl font-bold">Fleur</h1>
+          </div>
+          <p className="mt-4 text-3xl font-light">L'art de la rencontre.</p>
+          <p className="mt-4 text-md text-gray-200 max-w-md">
+            Conçu pour ceux qui recherchent des liens authentiques. Un espace pour des conversations sincères et une compréhension plus profonde.
+          </p>
+          
+          <div className="mt-12 space-y-4 max-w-sm">
+            <button
+              onClick={onLogin}
+              className="w-full flex items-center justify-center gap-3 bg-white text-gray-800 font-bold py-4 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            >
+              <GoogleIcon className="w-6 h-6" />
+              Continuer avec Google
+            </button>
+            <button
+              onClick={onLogin}
+              className="w-full text-sm text-gray-300 font-semibold py-3 px-6 rounded-full hover:bg-white/10 transition-colors duration-300"
+            >
+              Découvrir d'autres options
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

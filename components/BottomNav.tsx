@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { AppView } from '../types';
-import { CompassIcon, HeartIcon, MessageSquareIcon, UserIcon } from './Icons';
+import { CompassIcon, HeartIcon, MessageSquareIcon, UserIcon, CalendarIcon } from './Icons';
 
 interface BottomNavProps {
   activeView: AppView;
@@ -34,6 +34,11 @@ const BottomNav: React.FC<BottomNavProps> = ({ activeView, setView }) => {
           icon={<HeartIcon className="w-7 h-7" />} 
           isActive={activeView === AppView.Likes} 
           onClick={() => setView(AppView.Likes)} 
+        />
+        <NavItem 
+          icon={<CalendarIcon className="w-7 h-7" />} 
+          isActive={activeView === AppView.Events} 
+          onClick={() => setView(AppView.Events)} 
         />
         <NavItem 
           icon={<MessageSquareIcon className="w-7 h-7" />} 

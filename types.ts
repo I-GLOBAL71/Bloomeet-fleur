@@ -4,6 +4,7 @@ export enum AppView {
   Likes,
   Matches,
   Profile,
+  Events,
 }
 
 export interface UserProfile {
@@ -14,4 +15,23 @@ export interface UserProfile {
   interests: string[];
   photos: string[];
   distance: number;
+}
+
+export interface EventAttendee {
+  id: number;
+  name: string;
+  avatar: string;
+}
+
+export interface AppEvent {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  creationDate?: string;
+  location: string;
+  image: string;
+  attendees: EventAttendee[];
+  createdBy: string;
+  joiningFee?: number;
 }
