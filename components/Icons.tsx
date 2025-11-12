@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 interface IconProps {
@@ -155,4 +156,70 @@ export const LightbulbIcon: React.FC<IconProps> = ({ className }) => (
         <path d="M10 22h4" />
         <path d="M12 2a7 7 0 0 0-7 7c0 3.03 1.13 4.58 2.65 6.15a1 1 0 0 0 .65.35h6.4a1 1 0 0 0 .65-.35C17.87 13.58 19 12.03 19 9a7 7 0 0 0-7-7z" />
     </svg>
+);
+
+export const SendIcon: React.FC<IconProps> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <line x1="22" y1="2" x2="11" y2="13"></line>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+    </svg>
+);
+
+export const ChevronLeftIcon: React.FC<IconProps> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <polyline points="15 18 9 12 15 6"></polyline>
+  </svg>
+);
+
+export const EmojiIcon: React.FC<IconProps> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10"></circle>
+    <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>
+    <line x1="9" y1="9" x2="9.01" y2="9"></line>
+    <line x1="15" y1="9" x2="15.01" y2="9"></line>
+  </svg>
+);
+
+export const FlowerIcon: React.FC<IconProps> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className={className}>
+        <path d="M5.12,12.28c0.6-2.45,2-4.6,3.88-6.27" />
+        <path d="M18.88,12.28c-0.6-2.45-2-4.6-3.88-6.27" />
+        <path d="M9,5.01c-2.27,1.83-3.88,4.72-3.88,7.27" />
+        <path d="M15,5.01c2.27,1.83,3.88,4.72,3.88,7.27" />
+        <path d="M12,2c-2.02,0-3.88,0.96-5.12,2.55" />
+        <path d="M12,2c2.02,0,3.88,0.96,5.12,2.55" />
+        <path d="M12,22c2.02,0,3.88-0.96,5.12-2.55" />
+        <path d="M12,22c-2.02,0-3.88-0.96-5.12-2.55" />
+        <path d="M5.12,12.28c-0.78,2.15-0.78,4.59,0,6.74" />
+        <path d="M18.88,12.28c0.78,2.15,0.78,4.59,0,6.74" />
+        <path d="M9,19.02c-2.11-1.68-3.22-4.24-2.73-6.74" />
+        <path d="M15,19.02c2.11-1.68,3.22-4.24,2.73-6.74" />
+    </svg>
+);
+
+export const PhoneIcon: React.FC<IconProps> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+  </svg>
+);
+
+export const HistoryIcon: React.FC<IconProps> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <circle cx="12" cy="12" r="10"></circle>
+    <polyline points="12 6 12 12 16 14"></polyline>
+  </svg>
+);
+
+export const EditIcon: React.FC<IconProps> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+  </svg>
+);
+
+export const UndoIcon: React.FC<IconProps> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <path d="M3 7v6h6"></path>
+    <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+  </svg>
 );

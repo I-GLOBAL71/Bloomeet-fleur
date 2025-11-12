@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback, ChangeEvent } from 'react';
 import { GoogleGenAI, Type } from "@google/genai";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Reorder } from 'framer-motion';
 import { SparklesIcon, HeartIcon, CameraIcon, PlusIcon, TrashIcon, CheckIcon, PartyPopperIcon, LightbulbIcon } from './Icons';
 
 // --- DATA & TYPES ---
@@ -252,38 +252,41 @@ const StepPhotos: React.FC<{ photos: string[]; onChange: (photos: string[]) => v
         }
     };
     
-    const removePhoto = (index: number) => {
-        onChange(photos.filter((_, i) => i !== index));
+    const removePhoto = (photoToRemove: string) => {
+        onChange(photos.filter(p => p !== photoToRemove));
     };
 
     return (
         <div>
+            <p className="text-center text-gray-500 mb-4">Maintenez et faites glisser pour réorganiser. La première photo est votre photo principale.</p>
             <div className="grid grid-cols-3 gap-4">
-                {Array.from({ length: 6 }).map((_, index) => (
-                    <motion.div 
-                        key={index} 
-                        className={`aspect-square rounded-2xl overflow-hidden relative ${index === 0 ? 'col-span-2 row-span-2' : ''} ${photos[index] ? '' : 'bg-gray-100 border-2 border-dashed border-gray-300'}`}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                    >
-                        {photos[index] ? (
-                            <>
-                                <img src={photos[index]} alt={`Profil ${index + 1}`} className="w-full h-full object-cover" />
-                                <button onClick={() => removePhoto(index)} className="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1.5 hover:bg-black/80 transition">
-                                    <TrashIcon className="w-4 h-4" />
-                                </button>
-                            </>
-                        ) : (
-                            <label htmlFor="photo-upload" className="w-full h-full flex flex-col items-center justify-center text-gray-400 cursor-pointer hover:bg-gray-200 transition">
-                                <PlusIcon className="w-8 h-8" />
-                                <span className="text-sm mt-1">Ajouter</span>
-                            </label>
-                        )}
-                    </motion.div>
-                ))}
-                <input id="photo-upload" type="file" multiple accept="image/*" className="sr-only" onChange={handleFileChange} />
+                <Reorder.Group as="div" values={photos} onReorder={onChange} className="contents">
+                    {photos.map((photo, index) => (
+                        <Reorder.Item
+                            key={photo}
+                            value={photo}
+                            as="div"
+                            className={`aspect-square rounded-2xl overflow-hidden relative shadow-md cursor-grab active:cursor-grabbing ${index === 0 ? 'col-span-2 row-span-2' : ''}`}
+                            whileDrag={{ scale: 1.05, zIndex: 10, boxShadow: '0px 10px 30px rgba(0,0,0,0.2)' }}
+                        >
+                            <img src={photo} alt={`Profil ${index + 1}`} className="w-full h-full object-cover pointer-events-none" />
+                            <button onClick={() => removePhoto(photo)} className="absolute top-2 right-2 bg-black/50 text-white rounded-full p-1.5 hover:bg-black/80 transition z-20">
+                                <TrashIcon className="w-4 h-4" />
+                            </button>
+                        </Reorder.Item>
+                    ))}
+                </Reorder.Group>
+
+                {photos.length < 6 && (
+                    <div className={`aspect-square rounded-2xl overflow-hidden relative bg-gray-100 border-2 border-dashed border-gray-300 ${photos.length === 0 ? 'col-span-2 row-span-2' : ''}`}>
+                        <label htmlFor="photo-upload" className="w-full h-full flex flex-col items-center justify-center text-gray-400 cursor-pointer hover:bg-gray-200 transition">
+                            <PlusIcon className="w-8 h-8" />
+                            <span className="text-sm mt-1">Ajouter</span>
+                        </label>
+                    </div>
+                )}
             </div>
+            <input id="photo-upload" type="file" multiple accept="image/*" className="sr-only" onChange={handleFileChange} />
             <PhotoTips />
         </div>
     );

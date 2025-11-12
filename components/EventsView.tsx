@@ -1,7 +1,9 @@
+
 import React, { useState, useMemo, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { AppEvent, EventAttendee } from '../types';
-import { PlusIcon, XIcon, CalendarIcon, UserIcon, TrashIcon, ShareIcon, UserPlusIcon, CameraIcon, SlidersIcon, BellIcon } from './Icons';
+import { PlusIcon, XIcon, CalendarIcon, UserIcon, TrashIcon, ShareIcon, UserPlusIcon, CameraIcon, SlidersIcon, BellIcon, EditIcon } from './Icons';
 
 const mockAttendees: EventAttendee[] = [
   { id: 1, name: 'Chloé', avatar: 'https://picsum.photos/seed/woman1/100/100' },
@@ -387,8 +389,22 @@ const EventDetailView: React.FC<{
     onCancelReminder: (eventId: number) => void;
 }> = ({ event, onClose, onJoin, onLeave, isJoined, isCreator, onDeleteRequest, onInviteClick, reminder, onSetReminder, onCancelReminder }) => {
     
-    const [showReminderOptions, setShowReminderOptions] = useState(false);
-    const [reminderOption, setReminderOption] = useState('30'); // default to 30 mins
+    const [isEditingReminder, setIsEditingReminder] = useState(false);
+    const [customDate, setCustomDate] = useState('');
+    const [customTime, setCustomTime] = useState('');
+    const [reminderError, setReminderError] = useState<string | null>(null);
+    
+    const [isSharing, setIsSharing] = useState(false);
+    const [shareError, setShareError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (shareError) {
+            const timer = setTimeout(() => {
+                setShareError(null);
+            }, 4000);
+            return () => clearTimeout(timer);
+        }
+    }, [shareError]);
 
     const eventDate = useMemo(() => parseDate(event.date), [event.date]);
     
@@ -405,17 +421,12 @@ const EventDetailView: React.FC<{
         return (now.getTime() - creation.getTime()) > oneWeekInMs && event.attendees.length > 1;
     }, [event.creationDate, event.attendees.length]);
 
-    const handleSetReminderClick = () => {
-        if (!eventDate) return;
-        const reminderDate = new Date(eventDate.getTime());
-        const minutesToSubtract = parseInt(reminderOption, 10);
-        reminderDate.setMinutes(reminderDate.getMinutes() - minutesToSubtract);
-        onSetReminder(event.id, reminderDate.toISOString());
-        setShowReminderOptions(false);
-    };
-
     const handleShare = async () => {
+        if (isSharing) return;
+
         if (navigator.share) {
+            setIsSharing(true);
+            setShareError(null);
             try {
                 await navigator.share({
                     title: `Événement Fleur : ${event.title}`,
@@ -423,25 +434,117 @@ const EventDetailView: React.FC<{
                     url: window.location.origin,
                 });
             } catch (error) {
-                console.error('Error sharing event:', error);
+                if (error instanceof Error && error.name === 'AbortError') {
+                    // User cancelled, do nothing.
+                } else {
+                    console.error('Error sharing event:', error);
+                    setShareError("Le partage a échoué. Veuillez réessayer.");
+                }
+            } finally {
+                setIsSharing(false);
             }
+        } else {
+             setShareError("Le partage n'est pas supporté sur cet appareil.");
         }
     };
+    
+    const formatDateForInput = (date: Date) => date.toISOString().split('T')[0];
+    const formatTimeForInput = (date: Date) => {
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${hours}:${minutes}`;
+    };
 
-    const reminderOptions = [
-        { label: '30 minutes avant', value: '30' },
-        { label: '1 heure avant', value: '60' },
-        { label: '1 jour avant', value: '1440' }, // 24 * 60
-    ];
+    const handleEditClick = () => {
+        setReminderError(null);
+        if (reminder) {
+            const reminderDate = new Date(reminder);
+            setCustomDate(formatDateForInput(reminderDate));
+            setCustomTime(formatTimeForInput(reminderDate));
+        } else if (eventDate) {
+            // Default to 1 hour before event
+            const defaultReminderDate = new Date(eventDate.getTime() - 60 * 60 * 1000);
+            setCustomDate(formatDateForInput(defaultReminderDate));
+            setCustomTime(formatTimeForInput(defaultReminderDate));
+        }
+        setIsEditingReminder(true);
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditingReminder(false);
+        setReminderError(null);
+    };
+
+    const handleSetQuickReminder = (minutesBefore: number) => {
+        if (!eventDate) return;
+        const reminderDate = new Date(eventDate.getTime() - minutesBefore * 60 * 1000);
+
+        if (reminderDate < new Date()) {
+            setReminderError("Vous ne pouvez pas définir un rappel dans le passé.");
+            return;
+        }
+
+        onSetReminder(event.id, reminderDate.toISOString());
+        setIsEditingReminder(false);
+        setReminderError(null);
+    };
+
+    const handleConfirmCustomReminder = () => {
+        if (!customDate || !customTime || !eventDate) {
+            setReminderError("Veuillez spécifier une date et une heure complètes.");
+            return;
+        }
+        const reminderDate = new Date(`${customDate}T${customTime}`);
+        if (isNaN(reminderDate.getTime())) {
+            setReminderError("Date ou heure invalide.");
+            return;
+        }
+
+        if (reminderDate < new Date()) {
+            setReminderError("Vous ne pouvez pas définir un rappel dans le passé.");
+            return;
+        }
+        if (reminderDate > eventDate) {
+            setReminderError("Le rappel ne peut pas être après le début de l'événement.");
+            return;
+        }
+
+        onSetReminder(event.id, reminderDate.toISOString());
+        setIsEditingReminder(false);
+        setReminderError(null);
+    };
+    
+    const handleDeleteReminder = () => {
+        onCancelReminder(event.id);
+        setIsEditingReminder(false);
+        setReminderError(null);
+    };
 
     return (
         <div className="absolute inset-0 bg-gray-50 z-20 overflow-y-auto pb-20 slide-in-right">
+             <AnimatePresence>
+                {shareError && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -50 }}
+                        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                        className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] bg-red-500 text-white font-semibold py-2 px-5 rounded-full shadow-lg"
+                    >
+                        {shareError}
+                    </motion.div>
+                )}
+            </AnimatePresence>
              <img src={event.image} alt={event.title} className="w-full h-64 object-cover" />
              <button onClick={onClose} className="absolute top-4 left-4 bg-white/80 p-2 rounded-full text-gray-800 backdrop-blur-sm shadow-md hover:bg-white transition">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
              </button>
              {navigator.share && (
-                <button onClick={handleShare} className="absolute top-4 right-4 bg-white/80 p-2 rounded-full text-gray-800 backdrop-blur-sm shadow-md hover:bg-white transition active:scale-90">
+                <button
+                    onClick={handleShare}
+                    disabled={isSharing}
+                    className="absolute top-4 right-4 bg-white/80 p-2 rounded-full text-gray-800 backdrop-blur-sm shadow-md hover:bg-white transition active:scale-90 disabled:opacity-50"
+                >
                     <ShareIcon className="w-6 h-6" />
                 </button>
              )}
@@ -467,41 +570,63 @@ const EventDetailView: React.FC<{
                         <h2 className="font-semibold text-lg mb-3 flex items-center gap-2">
                             <BellIcon className="w-5 h-5" /> Rappel
                         </h2>
-                        {reminder ? (
+                        
+                        {!isEditingReminder && reminder && (
                             <div className="flex items-center justify-between bg-green-100 p-3 rounded-lg">
                                 <p className="text-green-800 text-sm font-medium">
                                     Défini pour : {new Date(reminder).toLocaleString('fr-FR', {
-                                        day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit'
+                                        day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
                                     })}
                                 </p>
-                                <button onClick={() => onCancelReminder(event.id)} className="text-sm font-semibold text-gray-600 hover:text-red-600">
-                                    Annuler
+                                <button onClick={handleEditClick} className="flex items-center gap-1.5 text-sm font-semibold text-gray-700 bg-white/60 hover:bg-white px-3 py-1.5 rounded-lg transition-colors">
+                                    <EditIcon className="w-4 h-4" /> Modifier
                                 </button>
                             </div>
-                        ) : showReminderOptions ? (
-                            <div className="space-y-3">
-                                <select
-                                    value={reminderOption}
-                                    onChange={(e) => setReminderOption(e.target.value)}
-                                    className="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-rose-500 focus:border-rose-500"
-                                >
-                                    {reminderOptions.map(opt => (
-                                        <option key={opt.value} value={opt.value}>{opt.label}</option>
-                                    ))}
-                                </select>
-                                <div className="flex gap-2">
-                                    <button onClick={() => setShowReminderOptions(false)} className="flex-1 py-2 px-3 rounded-lg text-gray-700 bg-gray-200 font-semibold hover:bg-gray-300 transition">
-                                        Annuler
-                                    </button>
-                                    <button onClick={handleSetReminderClick} className="flex-1 py-2 px-3 rounded-lg text-white bg-rose-500 font-semibold hover:bg-rose-600 transition">
-                                        Confirmer
-                                    </button>
-                                </div>
-                            </div>
-                        ) : (
-                            <button onClick={() => setShowReminderOptions(true)} className="w-full flex items-center justify-center gap-2 bg-rose-100 text-rose-700 font-bold py-3 px-4 rounded-lg hover:bg-rose-200 transition-colors">
+                        )}
+
+                        {!isEditingReminder && !reminder && (
+                            <button onClick={handleEditClick} className="w-full flex items-center justify-center gap-2 bg-rose-100 text-rose-700 font-bold py-3 px-4 rounded-lg hover:bg-rose-200 transition-colors">
                                 Définir un rappel
                             </button>
+                        )}
+
+                        {isEditingReminder && (
+                            <div className="p-4 bg-gray-100 rounded-lg space-y-4">
+                                <div>
+                                    <label className="font-semibold text-sm text-gray-600">Options rapides</label>
+                                    <div className="grid grid-cols-3 gap-2 mt-2">
+                                        <button onClick={() => handleSetQuickReminder(30)} className="text-sm py-2 px-1 bg-white border rounded-md hover:bg-rose-50 hover:border-rose-300 transition">30 min avant</button>
+                                        <button onClick={() => handleSetQuickReminder(60)} className="text-sm py-2 px-1 bg-white border rounded-md hover:bg-rose-50 hover:border-rose-300 transition">1 heure avant</button>
+                                        <button onClick={() => handleSetQuickReminder(1440)} className="text-sm py-2 px-1 bg-white border rounded-md hover:bg-rose-50 hover:border-rose-300 transition">1 jour avant</button>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label className="font-semibold text-sm text-gray-600">Personnalisé</label>
+                                    <div className="flex gap-2 mt-2">
+                                        <input type="date" value={customDate} onChange={e => setCustomDate(e.target.value)} className="w-full p-2 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"/>
+                                        <input type="time" value={customTime} onChange={e => setCustomTime(e.target.value)} className="w-full p-2 border border-gray-300 rounded-md focus:ring-rose-500 focus:border-rose-500"/>
+                                    </div>
+                                </div>
+
+                                {reminderError && <p className="text-red-600 text-sm font-semibold">{reminderError}</p>}
+
+                                <div className="flex flex-col gap-2 pt-2">
+                                    <button onClick={handleConfirmCustomReminder} className="w-full py-2 px-3 rounded-lg text-white bg-rose-500 font-semibold hover:bg-rose-600 transition">
+                                        Confirmer le rappel
+                                    </button>
+                                    <div className="flex gap-2">
+                                        {reminder && (
+                                            <button onClick={handleDeleteReminder} className="flex-1 py-2 px-3 rounded-lg text-red-700 bg-red-100 font-semibold hover:bg-red-200 transition">
+                                                Supprimer
+                                            </button>
+                                        )}
+                                        <button onClick={handleCancelEdit} className="flex-1 py-2 px-3 rounded-lg text-gray-700 bg-gray-200 font-semibold hover:bg-gray-300 transition">
+                                            Annuler
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         )}
                     </div>
                  )}
@@ -914,8 +1039,15 @@ const EventsView: React.FC = () => {
                 </div>
                 
                 <div key={activeTab} className="space-y-6 fade-in">
-                    {filteredEvents.length > 0 ? filteredEvents.map(event => (
-                        <div key={event.id} onClick={() => setSelectedEvent(event)} className={`${preferences.backgroundColor} rounded-2xl shadow-lg overflow-hidden cursor-pointer transform hover:scale-[1.02] transition-transform duration-300`}>
+                    {filteredEvents.length > 0 ? filteredEvents.map((event, index) => (
+                         <motion.div 
+                            key={event.id} 
+                            onClick={() => setSelectedEvent(event)} 
+                            className={`${preferences.backgroundColor} rounded-2xl shadow-lg overflow-hidden cursor-pointer transform hover:scale-[1.02] transition-transform duration-300`}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: index * 0.05 }}
+                         >
                             {preferences.layout === 'default' ? (
                                 <>
                                     <div className="relative">
@@ -954,7 +1086,7 @@ const EventsView: React.FC = () => {
                                     </div>
                                 </div>
                             )}
-                        </div>
+                        </motion.div>
                     )) : (
                        <div className="text-center py-16 px-4 text-gray-500">
                            <CalendarIcon className="w-16 h-16 mx-auto text-gray-300 mb-4" />
