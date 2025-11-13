@@ -1,0 +1,298 @@
+{
+  "login": {
+    "title": "Aura",
+    "word1": "Autenticità.",
+    "word2": "Connessioni.",
+    "word3": "Sincerità.",
+    "word4": "Scoperte.",
+    "continueWithGoogle": "Continua con Google",
+    "continueWithEmail": "O continua con la tua email",
+    "emailPlaceholder": "tua@email.com",
+    "magicLinkButton": "Ricevi un link magico",
+    "back": "Indietro",
+    "magicLinkSentTitle": "Link magico inviato!",
+    "magicLinkSentBody": "Controlla la tua casella di posta per connetterti ad Aura.",
+    "termsPrefix": "Continuando, accetti i nostri",
+    "termsOfUse": "Termini di Utilizzo",
+    "termsAnd": "e la nostra",
+    "privacyPolicy": "Informativa sulla Privacy"
+  },
+  "profile": {
+    "aboutMe": "Su di me",
+    "interests": "Interessi",
+    "language": "Lingua",
+    "petals": {
+      "yourPetals": "I tuoi Petali",
+      "petals": "petali",
+      "buy": "Acquista",
+      "shopTitle": "Negozio di Petali",
+      "shopSubtitle": "Ricarica il tuo saldo per sbloccare funzioni.",
+      "popular": "Popolare",
+      "or": "O",
+      "customAmount": "Importo personalizzato",
+      "customPlaceholder": "Es: 75",
+      "estimatedPrice": "Prezzo stimato"
+    },
+    "flowers": {
+      "yourFlowers": "I tuoi Fiori Ricevuti",
+      "sendHistory": "Cronologia invii",
+      "flowers": "fiori",
+      "withdraw": "Ritira"
+    },
+    "history": {
+      "title": "Cronologia invii",
+      "sentTo": "Inviato a",
+      "emptyTitle": "Nessun invio",
+      "emptyBody": "La cronologia dei tuoi fiori inviati apparirà qui."
+    },
+    "editProfile": "Modifica Profilo",
+    "settings": "Impostazioni"
+  },
+  "common": {
+    "cancel": "Annulla",
+    "flowers": "fiori",
+    "petals": "petali",
+    "back": "Indietro",
+    "continue": "Continua",
+    "start": "Inizia",
+    "you": "Tu",
+    "like": "MI PIACE",
+    "nope": "NO",
+    "match": "È un Match!",
+    "matchMessage": "Tu e {name} vi piacete a vicenda!",
+    "sendMessage": "Invia un messaggio",
+    "continueDiscovering": "Continua a scoprire",
+    "share": "Condividi",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "confirm": "Conferma",
+    "search": "Cerca...",
+    "kmAway": "{distance} km di distanza",
+    "free": "GRATIS",
+    "save": "Salva"
+  },
+  "onboarding": {
+    "progress": "Passo {step} di {total}",
+    "welcome": {
+      "title": "Crea un profilo che ti rispecchi.",
+      "subtitle": "L'autenticità è l'inizio di ogni bella storia. Diamo forma alla tua.",
+      "cta": "Crea il mio profilo"
+    },
+    "name": {
+      "title": "Come ti chiami?",
+      "subtitle": "Il tuo nome apparirà sul tuo profilo.",
+      "placeholder": "Inserisci il tuo nome"
+    },
+    "birthdate": {
+      "title": "Qual è la tua data di nascita?",
+      "subtitle": "La tua età sarà visibile pubblicamente.",
+      "age": "Hai {age} anni"
+    },
+    "gender": {
+      "title": "Come ti identifichi?",
+      "options": {
+        "male": "Uomo",
+        "female": "Donna",
+        "other": "Altro"
+      }
+    },
+    "orientation": {
+      "title": "Chi vorresti incontrare?",
+      "options": {
+        "straight": "Eterosessuale",
+        "gay": "Omosessuale",
+        "bisexual": "Bisessuale",
+        "other": "Altro"
+      }
+    },
+    "city": {
+      "title": "Dove vivi?",
+      "subtitle": "Questo ci aiuta a connetterti con persone vicine.",
+      "placeholder": "Inserisci la tua città, paese...",
+      "fetchError": "Errore nel recupero dei suggerimenti."
+    },
+    "phone": {
+      "title": "Verifica il tuo numero",
+      "subtitle": "Usiamo il tuo numero per proteggere il tuo account. Non sarà condiviso.",
+      "searchCountry": "Cerca un paese...",
+      "sendCode": "Invia codice",
+      "verifyTitle": "Inserisci il codice",
+      "verifySubtitle": "Un codice è stato inviato a {phone}",
+      "verified": "Verificato!",
+      "verifyButton": "Verifica",
+      "changeNumber": "Cambia numero"
+    },
+    "final": {
+      "title": "Benvenuto/a, {name}!",
+      "subtitle": "Il tuo profilo è pronto. È ora di scoprire persone fantastiche.",
+      "tipTitle": "Consiglio pro",
+      "tipBody": "Sii te stesso/a, condividi le tue passioni e non aver paura di fare il primo passo!",
+      "cta": "Inizia a scoprire"
+    },
+    "photos": {
+      "title": "Mostra chi sei",
+      "subtitle": "Aggiungi almeno due foto. La prima sarà la tua immagine del profilo principale.",
+      "profile": "Profilo"
+    },
+    "bio": {
+      "title": "Parlaci di te",
+      "subtitle": "La tua biografia è un'ottima opportunità per mostrare la tua personalità.",
+      "placeholder": "Scrivi qualcosa di interessante...",
+      "aiButton": "Genera con IA",
+      "aiError": "Spiacenti, si è verificato un errore.",
+      "aiPrompt": "Genera una biografia per un profilo di incontri breve e accattivante (circa 40-50 parole) in italiano per una persona di genere {gender}, che ha {age} anni, a cui piace {interests} e vive a {city}. Il tono dovrebbe essere autentico e invitare alla conversazione. Non includere hashtag."
+    },
+    "interests": {
+      "title": "Cosa ti appassiona?",
+      "subtitle": "Scegli fino a {count} interessi.",
+      "searchPlaceholder": "Cerca un interesse..."
+    }
+  },
+  "discovery": {
+    "interests": "Interessi",
+    "sendFlowersTo": "Invia fiori a {name}",
+    "yourBalance": "Il tuo saldo: {balance} fiori",
+    "sendButton": "Invia {amount} fiore{plural}",
+    "sending": "Invio in corso...",
+    "sent": "Fiori inviati!",
+    "requestContact": "Richiedi contatto",
+    "noProfiles": {
+      "title": "Per ora è tutto!",
+      "subtitle": "Torna più tardi per nuove persone."
+    }
+  },
+  "likes": {
+    "title": "Piaci a loro",
+    "subtitle": "Ecco le persone a cui è piaciuto il tuo profilo.",
+    "unlockProfileTitle": "Sbloccare il profilo di {name}?",
+    "unlockProfileBody": "Questo creerà un match e ti permetterà di inviare il primo messaggio.",
+    "unlockCost": "Costo: {cost}",
+    "unlockAndMatch": "Sblocca e Abbina"
+  },
+  "matches": {
+    "title": "Match",
+    "startConversation": "Inizia la conversazione!"
+  },
+  "chat": {
+    "placeholder": "Scrivi un messaggio...",
+    "giftSent": "Hai inviato {amount} fiore{plural}.",
+    "emojiCategories": {
+        "smileys": "Faccine",
+        "animals": "Animali",
+        "food": "Cibo",
+        "activities": "Attività"
+    }
+  },
+  "events": {
+    "title": "Eventi",
+    "create": "Crea",
+    "dashboard": {
+      "title": "Dashboard",
+      "created": "Eventi Creati",
+      "attendees": "Partecipanti Unici",
+      "popularTypes": "Tipi di Eventi Popolari",
+      "attendeesCount": "Partecipanti"
+    },
+    "tabs": {
+      "upcoming": "In arrivo",
+      "past": "Passati",
+      "mine": "I miei eventi"
+    },
+    "empty": {
+      "upcoming": {
+        "title": "Nessun evento in arrivo",
+        "message": "Torna più tardi o creane uno tuo!"
+      },
+      "past": {
+        "title": "Nessun evento passato",
+        "message": "Gli eventi a cui hai partecipato appariranno qui."
+      },
+      "mine": {
+        "title": "Non hai creato nessun evento",
+        "message": "Clicca su 'Crea' per organizzare il tuo incontro."
+      }
+    },
+    "card": {
+      "attendees": "{count} partecipanti"
+    },
+    "detail": {
+      "fee": "Quota di partecipazione",
+      "location": "Luogo",
+      "feeInPetals": "{count} petali",
+      "description": "Descrizione",
+      "qr": {
+        "creatorTitle": "Codice QR dell'Evento",
+        "creatorDesc": "I partecipanti scannerizzeranno questo codice per fare il check-in all'evento.",
+        "attendeeTitle": "Il Tuo Biglietto",
+        "attendeeDesc": "Presenta questo codice all'ingresso per convalidare la tua presenza."
+      },
+      "attendeesGrowth": "Crescita dei partecipanti",
+      "attendees": "Partecipanti",
+      "invite": "Invita",
+      "creatorActions": "Azioni del creatore",
+      "deleteEvent": "Elimina evento",
+      "leaveEvent": "Lascia l'evento",
+      "joinEvent": "Partecipa",
+      "joinEventWithFee": "Partecipa per {cost} petali",
+      "shareFailed": "Condivisione non riuscita. Riprova.",
+      "shareUnsupported": "La condivisione non è supportata su questo dispositivo.",
+      "manageEvent": "Gestisci Evento",
+      "myTicket": "Vedi il mio Biglietto"
+    },
+    "scanner": {
+      "scanButton": "Scansiona Biglietto",
+      "invalidTicket": "Biglietto non valido per questo evento.",
+      "notRegistered": "Questo utente non è registrato all'evento.",
+      "alreadyCheckedIn": "{name} ha già effettuato il check-in.",
+      "success": "Check-in riuscito per {name}!",
+      "invalidQRCode": "Codice QR non valido o illeggibile.",
+      "checkedInTooltip": "Check-in effettuato"
+    },
+    "createModal": {
+      "title": "Crea un evento",
+      "coverImage": "Immagine di copertina",
+      "eventTitle": "Titolo dell'evento",
+      "description": "Descrizione",
+      "date": "Data",
+      "time": "Ora",
+      "location": "Luogo",
+      "fee": "Costo in petali (lascia vuoto se gratuito)",
+      "errors": {
+        "titleRequired": "Il titolo è obbligatorio.",
+        "titleMin": "Il titolo deve avere almeno 5 caratteri.",
+        "descriptionRequired": "La descrizione è obbligatoria.",
+        "descriptionMin": "La descrizione deve avere almeno 10 caratteri.",
+        "dateRequired": "La data è obbligatoria.",
+        "timeRequired": "L'ora è obbligatoria.",
+        "locationRequired": "Il luogo è obbligatorio.",
+        "imageRequired": "È richiesta un'immagine di copertina.",
+        "feeInvalid": "Inserisci un numero valido."
+      }
+    },
+    "joinModal": {
+      "title": "Partecipare a {title}?",
+      "confirmMessage": "Questo dedurrà {cost} petali dal tuo saldo. Vuoi confermare?",
+      "insufficientFunds": "Non hai abbastanza petali per partecipare a questo evento.",
+      "confirmButton": "Paga {cost} petali",
+      "buyButton": "Acquista Petali"
+    },
+    "inviteModal": {
+      "title": "Invita amici",
+      "searchPlaceholder": "Cerca un amico...",
+      "empty": "Nessun amico da invitare.",
+      "sendButton": "Invia {count} invito{plural}"
+    },
+    "deleteModal": {
+      "title": "Conferma eliminazione",
+      "message": "Sei sicuro di voler eliminare l'evento \"{title}\"? Questa azione è irreversibile."
+    },
+    "customizeModal": {
+      "title": "Personalizza la visualizzazione",
+      "layout": "Layout",
+      "layoutDefault": "Predefinito",
+      "layoutCompact": "Compatto",
+      "backgroundColor": "Colore di sfondo",
+      "done": "Fatto"
+    }
+  }
+}

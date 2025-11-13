@@ -23,6 +23,7 @@ export interface EventAttendee {
   id: number;
   name: string;
   avatar: string;
+  checkedIn?: boolean;
 }
 
 export interface AppEvent {
@@ -30,6 +31,7 @@ export interface AppEvent {
   title: string;
   description: string;
   date: string;
+  isoDate?: string;
   creationDate?: string;
   location: string;
   image: string;

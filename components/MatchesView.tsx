@@ -1,8 +1,8 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Match, Message } from '../types';
 import ChatView from './ChatView';
+import { useTranslation } from '../hooks/useTranslation';
 
 const CURRENT_USER_ID = 99; // Mock current user
 
@@ -44,6 +44,7 @@ const initialMatches: Match[] = [
 ];
 
 const MatchesView: React.FC = () => {
+  const { t } = useTranslation();
   const [matches, setMatches] = useState<Match[]>(initialMatches);
   const [selectedChat, setSelectedChat] = useState<Match | null>(null);
   const [currentUserFlowerBalance, setCurrentUserFlowerBalance] = useState(250);
@@ -61,7 +62,7 @@ const MatchesView: React.FC = () => {
 
   const getLastMessage = (match: Match): { text: string; timestamp: string } => {
     if (match.messages.length === 0) {
-      return { text: "Commencez la conversation !", timestamp: "" };
+      return { text: t('matches.startConversation'), timestamp: "" };
     }
     const lastMsg = match.messages[match.messages.length - 1];
     if (lastMsg.type === 'gift') {
@@ -73,7 +74,7 @@ const MatchesView: React.FC = () => {
   return (
     <div className="relative h-full overflow-hidden">
       <div className="p-4">
-        <h1 className="font-display text-4xl font-bold text-gray-800 mb-6">Matches</h1>
+        <h1 className="font-display text-4xl font-bold text-gray-800 mb-6">{t('matches.title')}</h1>
         <div className="space-y-4">
           {matches.map(match => {
             const lastMessage = getLastMessage(match);

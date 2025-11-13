@@ -1,8 +1,8 @@
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UserProfile } from '../types';
 import { HeartIcon, LockIcon, PetalIcon, XIcon, MessageSquareIcon } from './Icons';
+import { useTranslation } from '../hooks/useTranslation';
 
 const mockLikedByUsers: UserProfile[] = [
   { id: 1, name: 'Amélie', age: 25, bio: 'Passionnée de voyages et de littérature.', interests: ['Voyage', 'Lecture'], photos: ['https://picsum.photos/seed/like1/800/1200'], distance: 8 },
@@ -22,6 +22,7 @@ const MatchAnimation: React.FC<{
     onContinue: () => void;
     onMessage: () => void;
 }> = ({ me, them, onContinue, onMessage }) => {
+    const { t } = useTranslation();
     return (
         <motion.div
             className="fixed inset-0 bg-rose-500/80 backdrop-blur-xl z-50 flex flex-col justify-center items-center p-8 overflow-hidden"
@@ -34,7 +35,7 @@ const MatchAnimation: React.FC<{
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.2, type: 'spring', stiffness: 100 }}
             >
-                C'est un Match !
+                {t('common.match')}
             </motion.h1>
 
             <div className="relative flex items-center justify-center w-64 h-48">
@@ -70,7 +71,7 @@ const MatchAnimation: React.FC<{
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 1, type: 'spring', stiffness: 100 }}
             >
-                Vous et {them.name} vous êtes mutuellement plu !
+                {t('common.matchMessage', { name: them.name })}
             </motion.p>
             
             <motion.div 
@@ -80,10 +81,10 @@ const MatchAnimation: React.FC<{
                 transition={{ delay: 1.2, type: 'spring', stiffness: 100 }}
             >
                 <button onClick={onMessage} className="w-full bg-white text-rose-500 font-bold py-4 rounded-full shadow-lg text-lg">
-                    Envoyer un message
+                    {t('common.sendMessage')}
                 </button>
                 <button onClick={onContinue} className="w-full text-white font-semibold py-3 rounded-full hover:bg-white/20 transition-colors">
-                    Continuer à découvrir
+                    {t('common.continueDiscovering')}
                 </button>
             </motion.div>
         </motion.div>
@@ -95,45 +96,50 @@ const UnlockProfileModal: React.FC<{
     petalBalance: number;
     onUnlock: () => void;
     onCancel: () => void;
-}> = ({ profile, petalBalance, onUnlock, onCancel }) => (
-    <motion.div
-        className="fixed inset-0 bg-black/60 z-40 flex justify-center items-center p-4"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-    >
+}> = ({ profile, petalBalance, onUnlock, onCancel }) => {
+    const { t } = useTranslation();
+    return (
         <motion.div
-            className="bg-white rounded-2xl p-8 w-full max-w-sm text-center shadow-xl"
-            initial={{ scale: 0.9, y: 20 }}
-            animate={{ scale: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0 }}
+            className="fixed inset-0 bg-black/60 z-40 flex justify-center items-center p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
         >
-            <h2 className="font-display text-2xl font-bold text-gray-800">Débloquer le profil de {profile.name} ?</h2>
-            <p className="text-gray-600 my-4">Cela créera un match et vous permettra de lui envoyer le premier message.</p>
-            <div className="flex justify-center items-center gap-2 font-bold text-xl my-6 p-3 bg-violet-100 rounded-lg">
-                <span className="text-violet-600">Coût : {UNLOCK_COST}</span>
-                <PetalIcon className="w-7 h-7" />
-            </div>
-            <p className="text-sm text-gray-500 mb-6">Votre solde : {petalBalance} pétales</p>
-
-            <div className="flex flex-col gap-3">
-                <button
-                    onClick={onUnlock}
-                    disabled={petalBalance < UNLOCK_COST}
-                    className="w-full flex items-center justify-center gap-2 bg-rose-500 text-white font-bold py-3 px-4 rounded-lg transition hover:bg-rose-600 disabled:bg-gray-300"
-                >
-                    <MessageSquareIcon className="w-5 h-5"/>
-                    Débloquer & Matcher
-                </button>
-                <button onClick={onCancel} className="w-full py-3 text-gray-700 font-semibold hover:bg-gray-100 rounded-lg">
-                    Annuler
-                </button>
-            </div>
+            <motion.div
+                className="bg-white rounded-2xl p-8 w-full max-w-sm text-center shadow-xl"
+                initial={{ scale: 0.9, y: 20 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+            >
+                <h2 className="font-display text-2xl font-bold text-gray-800">{t('likes.unlockProfileTitle', { name: profile.name })}</h2>
+                <p className="text-gray-600 my-4">{t('likes.unlockProfileBody')}</p>
+                <div className="flex justify-center items-center gap-2 font-bold text-xl my-6 p-3 bg-violet-100 rounded-lg">
+                    <span className="text-violet-600">{t('likes.unlockCost', { cost: UNLOCK_COST })}</span>
+                    <PetalIcon className="w-7 h-7" />
+                </div>
+                <p className="text-sm text-gray-500 mb-6">{t('profile.petals.yourPetals')}: {petalBalance} {t('common.petals')}</p>
+    
+                <div className="flex flex-col gap-3">
+                    <button
+                        onClick={onUnlock}
+                        disabled={petalBalance < UNLOCK_COST}
+                        className="w-full flex items-center justify-center gap-2 bg-rose-500 text-white font-bold py-3 px-4 rounded-lg transition hover:bg-rose-600 disabled:bg-gray-300"
+                    >
+                        <MessageSquareIcon className="w-5 h-5"/>
+                        {t('likes.unlockAndMatch')}
+                    </button>
+                    <button onClick={onCancel} className="w-full py-3 text-gray-700 font-semibold hover:bg-gray-100 rounded-lg">
+                        {t('common.cancel')}
+                    </button>
+                </div>
+            </motion.div>
         </motion.div>
-    </motion.div>
-);
+    );
+};
+
 
 const LikesView: React.FC = () => {
+    const { t } = useTranslation();
     const [likers, setLikers] = useState<UserProfile[]>(mockLikedByUsers);
     const [matchData, setMatchData] = useState<UserProfile | null>(null);
     const [unlockingProfile, setUnlockingProfile] = useState<UserProfile | null>(null);
@@ -163,8 +169,8 @@ const LikesView: React.FC = () => {
     
     return (
         <div className="p-4 pb-20">
-            <h1 className="font-display text-4xl font-bold text-gray-800 mb-2">Ils vous aiment</h1>
-            <p className="text-gray-500 mb-6">Voici les personnes qui ont aimé votre profil.</p>
+            <h1 className="font-display text-4xl font-bold text-gray-800 mb-2">{t('likes.title')}</h1>
+            <p className="text-gray-500 mb-6">{t('likes.subtitle')}</p>
 
             <div className="grid grid-cols-2 gap-4">
                 {likers.map((user, index) => (

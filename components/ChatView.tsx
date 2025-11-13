@@ -1,19 +1,22 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Match, Message } from '../types';
 import { ChevronLeftIcon, SendIcon, EmojiIcon, FlowerIcon, XIcon } from './Icons';
+import { useTranslation } from '../hooks/useTranslation';
 
 const CURRENT_USER_ID = 99;
 
-const emojiCategories = [
-  { name: 'Smileys', icon: '😀', emojis: ['😀', '😂', '😍', '🤔', '😊', '😢', '😡', '🥳', '🤯', '😴', '👍', '👎', '❤️', '💔'] },
-  { name: 'Animaux', icon: '🐶', emojis: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷'] },
-  { name: 'Nourriture', icon: '🍕', emojis: ['🍏', '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🍕', '🍔', '🍟', '🍣', '🍰'] },
-  { name: 'Activités', icon: '⚽', emojis: ['⚽', '🏀', '🏈', '⚾️', '🎾', '🏐', '🎱', '🏓', '🏸', '🎮', '🎨', '🎬', '🎵'] },
+const getEmojiCategories = (t: (key: string) => string) => [
+  { name: t('chat.emojiCategories.smileys'), icon: '😀', emojis: ['😀', '😂', '😍', '🤔', '😊', '😢', '😡', '🥳', '🤯', '😴', '👍', '👎', '❤️', '💔'] },
+  { name: t('chat.emojiCategories.animals'), icon: '🐶', emojis: ['🐶', '🐱', '🐭', '🐹', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷'] },
+  { name: t('chat.emojiCategories.food'), icon: '🍕', emojis: ['🍏', '🍎', '🍐', '🍊', '🍋', '🍌', '🍉', '🍇', '🍓', '🍕', '🍔', '🍟', '🍣', '🍰'] },
+  { name: t('chat.emojiCategories.activities'), icon: '⚽', emojis: ['⚽', '🏀', '🏈', '⚾️', '🎾', '🏐', '🎱', '🏓', '🏸', '🎮', '🎨', '🎬', '🎵'] },
 ];
 
+
 const EmojiPicker: React.FC<{ onSelect: (emoji: string) => void; }> = ({ onSelect }) => {
+    const { t } = useTranslation();
+    const emojiCategories = getEmojiCategories(t);
     const [activeCategory, setActiveCategory] = useState(emojiCategories[0].name);
 
     return (
@@ -85,6 +88,7 @@ const SendFlowerModal: React.FC<{
     onClose: () => void;
     onSend: (amount: number) => void;
 }> = ({ recipientName, currentUserBalance, onClose, onSend }) => {
+    const { t } = useTranslation();
     const [amount, setAmount] = useState(1);
     const amounts = [1, 5, 10];
 
@@ -108,8 +112,8 @@ const SendFlowerModal: React.FC<{
                 exit={{ scale: 0.9, opacity: 0 }}
             >
                 <FlowerIcon className="w-16 h-16 text-rose-400 mx-auto animate-pulse" />
-                <h2 className="font-display text-2xl font-bold mt-4 text-gray-800">Envoyer des fleurs à {recipientName}</h2>
-                <p className="text-gray-500 mt-2">Votre solde : <span className="font-semibold">{currentUserBalance}</span> fleurs</p>
+                <h2 className="font-display text-2xl font-bold mt-4 text-gray-800">{t('discovery.sendFlowersTo', { name: recipientName })}</h2>
+                <p className="text-gray-500 mt-2">{t('discovery.yourBalance', { balance: currentUserBalance })}</p>
                 
                 <div className="flex justify-center gap-3 my-6">
                     {amounts.map(a => (
@@ -128,9 +132,9 @@ const SendFlowerModal: React.FC<{
                     disabled={currentUserBalance < amount}
                     className="w-full py-3 px-4 rounded-lg text-white bg-rose-500 font-semibold hover:bg-rose-600 transition disabled:bg-gray-300 disabled:cursor-not-allowed"
                 >
-                    Envoyer {amount} fleur{amount > 1 ? 's' : ''}
+                    {t('discovery.sendButton', { amount, plural: amount > 1 ? 's' : '' })}
                 </button>
-                <button onClick={onClose} className="w-full mt-3 py-2 text-gray-600 font-semibold">Annuler</button>
+                <button onClick={onClose} className="w-full mt-3 py-2 text-gray-600 font-semibold">{t('common.cancel')}</button>
             </motion.div>
         </motion.div>
     );
@@ -145,6 +149,7 @@ interface ChatViewProps {
 }
 
 const ChatView: React.FC<ChatViewProps> = ({ match, onClose, onUpdateMessages, currentUserFlowerBalance, onUpdateFlowerBalance }) => {
+    const { t } = useTranslation();
     const [newMessage, setNewMessage] = useState('');
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [showSendFlowerModal, setShowSendFlowerModal] = useState(false);
@@ -198,7 +203,7 @@ const ChatView: React.FC<ChatViewProps> = ({ match, onClose, onUpdateMessages, c
             
             const giftMessage: Message = {
                 id: Date.now(),
-                text: `Vous avez envoyé ${amount} fleur${amount > 1 ? 's' : ''}.`,
+                text: t('chat.giftSent', { amount, plural: amount > 1 ? 's' : '' }),
                 senderId: CURRENT_USER_ID,
                 timestamp: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
                 type: 'gift',
@@ -281,7 +286,7 @@ const ChatView: React.FC<ChatViewProps> = ({ match, onClose, onUpdateMessages, c
                             onChange={(e) => setNewMessage(e.target.value)}
                             onFocus={() => setShowEmojiPicker(false)}
                             onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
-                            placeholder="Écrire un message..."
+                            placeholder={t('chat.placeholder')}
                             className="flex-grow bg-transparent focus:outline-none resize-none max-h-32 text-lg px-2"
                             rows={1}
                         />

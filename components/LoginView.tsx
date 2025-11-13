@@ -1,6 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
-import { GoogleIcon, LogoIcon } from './Icons';
+import { motion, AnimatePresence } from 'framer-motion';
+import { GoogleIcon, LogoIcon, AtSignIcon, ArrowLeftIcon } from './Icons';
+import { useTranslation } from '../hooks/useTranslation';
+import LanguageSwitcher from './LanguageSwitcher';
 
 interface LoginViewProps {
   onLogin: () => void;
@@ -14,14 +17,60 @@ const backgroundImages = [
 ];
 
 const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
+  const { t } = useTranslation();
   const [currentImage, setCurrentImage] = useState(0);
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [view, setView] = useState<'options' | 'emailInput' | 'emailSent'>('options');
+  const [email, setEmail] = useState('');
+
+  const inspiringWords = [
+    t('login.word1'),
+    t('login.word2'),
+    t('login.word3'),
+    t('login.word4'),
+  ];
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    const imageTimer = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % backgroundImages.length);
     }, 7000);
-    return () => clearInterval(timer);
+    return () => clearInterval(imageTimer);
   }, []);
+
+  useEffect(() => {
+    const wordTimer = setInterval(() => {
+        setCurrentWordIndex(prev => (prev + 1) % inspiringWords.length);
+    }, 3000);
+    return () => clearInterval(wordTimer);
+  }, [inspiringWords]);
+
+  const handleMagicLink = () => {
+    if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      // Simulate sending a magic link
+      setView('emailSent');
+    }
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+        opacity: 1,
+        transition: { staggerChildren: 0.3, delayChildren: 0.5 }
+    }
+  };
+
+  const itemVariants = { 
+    hidden: { opacity: 0, y: 20 }, 
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } } 
+  };
+  
+  const authViewVariants = {
+      initial: { opacity: 0, y: 30, scale: 0.98 },
+      animate: { opacity: 1, y: 0, scale: 1 },
+      exit: { opacity: 0, y: -30, scale: 0.98 },
+  };
+  const authViewTransition = { type: "spring", stiffness: 300, damping: 30 };
+
 
   return (
     <div className="min-h-screen w-full bg-black relative overflow-hidden">
@@ -42,35 +91,140 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
         </div>
       ))}
       
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+      
+      <div className="absolute top-4 end-4 z-10">
+          <LanguageSwitcher as="button" />
+      </div>
 
-      <div className="relative h-screen w-full flex flex-col justify-end items-start p-8 sm:p-12 pb-16 text-white">
-        <div className="w-full max-w-lg content-fade-in">
-          <div className="flex items-center gap-4 mb-4">
+      <div className="relative h-screen w-full flex flex-col justify-end items-start p-8 sm:p-12 pb-24 text-white">
+        <motion.div 
+            className="w-full max-w-lg"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+        >
+          <motion.div 
+            className="flex items-center gap-4 mb-4"
+            variants={itemVariants}
+          >
             <LogoIcon className="w-12 h-12 text-rose-400" />
-            <h1 className="font-display text-7xl font-bold">Aura</h1>
-          </div>
-          <p className="mt-4 text-3xl font-light">L'art de la rencontre.</p>
-          <p className="mt-4 text-md text-gray-200 max-w-md">
-            Conçu pour ceux qui recherchent des liens authentiques. Un espace pour des conversations sincères et une compréhension plus profonde.
-          </p>
+            <h1 className="font-display text-7xl font-bold">{t('login.title')}</h1>
+          </motion.div>
           
-          <div className="mt-12 space-y-4 max-w-sm">
-            <button
-              onClick={onLogin}
-              className="w-full flex items-center justify-center gap-3 bg-white text-gray-800 font-bold py-4 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+          <motion.div 
+            className="mt-6 text-4xl font-light h-12"
+            variants={itemVariants}
+          >
+            <AnimatePresence mode="wait">
+                <motion.span
+                    key={currentWordIndex}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.6, ease: 'easeInOut' }}
+                    className="block"
+                >
+                    {inspiringWords[currentWordIndex]}
+                </motion.span>
+            </AnimatePresence>
+          </motion.div>
+
+          <motion.div 
+            className="mt-12 max-w-sm relative h-56"
+            variants={itemVariants}
+          >
+            <AnimatePresence mode="wait">
+              {view === 'options' && (
+                <motion.div
+                  key="options"
+                  className="absolute w-full space-y-4"
+                  variants={authViewVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  transition={authViewTransition}
+                >
+                   <motion.button
+                      onClick={onLogin}
+                      className="w-full flex items-center justify-center gap-3 bg-white text-gray-800 font-bold py-4 px-6 rounded-full shadow-lg transition-all duration-300 transform"
+                      whileHover={{ scale: 1.05, boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.2)" }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <GoogleIcon className="w-6 h-6" />
+                      {t('login.continueWithGoogle')}
+                    </motion.button>
+                     <button
+                      onClick={() => setView('emailInput')}
+                      className="w-full text-white/80 hover:text-white font-semibold transition-colors"
+                    >
+                      {t('login.continueWithEmail')}
+                    </button>
+                </motion.div>
+              )}
+              {view === 'emailInput' && (
+                <motion.div
+                  key="emailInput"
+                  className="absolute w-full space-y-4"
+                  variants={authViewVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  transition={authViewTransition}
+                >
+                    <div className="relative">
+                       <AtSignIcon className="w-6 h-6 absolute start-4 top-1/2 -translate-y-1/2 text-white/50"/>
+                       <input 
+                         type="email"
+                         placeholder={t('login.emailPlaceholder')}
+                         value={email}
+                         onChange={(e) => setEmail(e.target.value)}
+                         className="w-full bg-white/10 border border-white/20 rounded-full py-4 ps-12 pe-4 text-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-rose-400 transition"
+                       />
+                    </div>
+                     <motion.button
+                        onClick={handleMagicLink}
+                        className="w-full font-bold py-4 px-6 rounded-full shadow-lg transition-all duration-300 transform bg-gradient-to-r from-rose-500 via-orange-400 to-yellow-400 disabled:opacity-60"
+                        whileHover={{ scale: 1.05, boxShadow: "0px 10px 20px rgba(236, 72, 153, 0.3)" }}
+                        whileTap={{ scale: 0.98 }}
+                        disabled={!email}
+                      >
+                        {t('login.magicLinkButton')}
+                      </motion.button>
+                      <button
+                        onClick={() => setView('options')}
+                        className="w-full flex items-center justify-center gap-2 text-white/80 hover:text-white font-semibold transition-colors"
+                      >
+                        <ArrowLeftIcon className="w-5 h-5"/>
+                        {t('login.back')}
+                      </button>
+                </motion.div>
+              )}
+               {view === 'emailSent' && (
+                <motion.div
+                  key="emailSent"
+                  className="absolute w-full text-center"
+                  variants={authViewVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  transition={authViewTransition}
+                >
+                    <div className="p-4 bg-green-500/20 border border-green-400 rounded-xl">
+                        <h3 className="text-xl font-bold text-white">{t('login.magicLinkSentTitle')}</h3>
+                        <p className="mt-2 text-white/90">{t('login.magicLinkSentBody')}</p>
+                    </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+           <motion.p
+             variants={itemVariants}
+             className="mt-8 text-xs text-gray-400 max-w-sm"
             >
-              <GoogleIcon className="w-6 h-6" />
-              Continuer avec Google
-            </button>
-            <button
-              onClick={onLogin}
-              className="w-full text-sm text-gray-300 font-semibold py-3 px-6 rounded-full hover:bg-white/10 transition-colors duration-300"
-            >
-              Découvrir d'autres options
-            </button>
-          </div>
-        </div>
+                {t('login.termsPrefix')} <a href="#" className="underline hover:text-white transition">{t('login.termsOfUse')}</a> {t('login.termsAnd')} <a href="#" className="underline hover:text-white transition">{t('login.privacyPolicy')}</a>.
+            </motion.p>
+        </motion.div>
       </div>
     </div>
   );

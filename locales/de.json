@@ -1,0 +1,298 @@
+{
+  "login": {
+    "title": "Aura",
+    "word1": "Authentizität.",
+    "word2": "Verbindungen.",
+    "word3": "Aufrichtigkeit.",
+    "word4": "Entdeckungen.",
+    "continueWithGoogle": "Mit Google fortfahren",
+    "continueWithEmail": "Oder mit deiner E-Mail fortfahren",
+    "emailPlaceholder": "deine@email.com",
+    "magicLinkButton": "Magischen Link erhalten",
+    "back": "Zurück",
+    "magicLinkSentTitle": "Magischer Link gesendet!",
+    "magicLinkSentBody": "Bitte überprüfe dein Postfach, um dich bei Aura anzumelden.",
+    "termsPrefix": "Indem du fortfährst, stimmst du unseren",
+    "termsOfUse": "Nutzungsbedingungen",
+    "termsAnd": "und unserer",
+    "privacyPolicy": "Datenschutzrichtlinie zu"
+  },
+  "profile": {
+    "aboutMe": "Über mich",
+    "interests": "Interessen",
+    "language": "Sprache",
+    "petals": {
+      "yourPetals": "Deine Blütenblätter",
+      "petals": "Blütenblätter",
+      "buy": "Kaufen",
+      "shopTitle": "Blütenblatt-Shop",
+      "shopSubtitle": "Lade dein Guthaben auf, um Funktionen freizuschalten.",
+      "popular": "Beliebt",
+      "or": "ODER",
+      "customAmount": "Benutzerdefinierter Betrag",
+      "customPlaceholder": "z.B. 75",
+      "estimatedPrice": "Geschätzter Preis"
+    },
+    "flowers": {
+      "yourFlowers": "Deine erhaltenen Blumen",
+      "sendHistory": "Sende-Verlauf",
+      "flowers": "Blumen",
+      "withdraw": "Abheben"
+    },
+    "history": {
+      "title": "Sende-Verlauf",
+      "sentTo": "Gesendet an",
+      "emptyTitle": "Keine Sendungen",
+      "emptyBody": "Der Verlauf deiner gesendeten Blumen wird hier angezeigt."
+    },
+    "editProfile": "Profil bearbeiten",
+    "settings": "Einstellungen"
+  },
+    "common": {
+    "cancel": "Abbrechen",
+    "flowers": "Blumen",
+    "petals": "Blütenblätter",
+    "back": "Zurück",
+    "continue": "Weiter",
+    "start": "Start",
+    "you": "Du",
+    "like": "LIKE",
+    "nope": "NOPE",
+    "match": "Es ist ein Match!",
+    "matchMessage": "Ihr habt euch gegenseitig geliked!",
+    "sendMessage": "Nachricht senden",
+    "continueDiscovering": "Weiter entdecken",
+    "share": "Teilen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "confirm": "Bestätigen",
+    "search": "Suchen...",
+    "kmAway": "{distance} km entfernt",
+    "free": "KOSTENLOS",
+    "save": "Speichern"
+  },
+  "onboarding": {
+    "progress": "Schritt {step} von {total}",
+    "welcome": {
+      "title": "Erstelle ein Profil, das dich widerspiegelt.",
+      "subtitle": "Authentizität ist der Anfang jeder schönen Geschichte. Lass uns deine gestalten.",
+      "cta": "Mein Profil erstellen"
+    },
+    "name": {
+      "title": "Wie ist dein Name?",
+      "subtitle": "Dein Vorname wird in deinem Profil angezeigt.",
+      "placeholder": "Gib deinen Vornamen ein"
+    },
+    "birthdate": {
+      "title": "Was ist dein Geburtsdatum?",
+      "subtitle": "Dein Alter wird öffentlich angezeigt.",
+      "age": "Du bist {age} Jahre alt"
+    },
+    "gender": {
+      "title": "Wie identifizierst du dich?",
+      "options": {
+        "male": "Mann",
+        "female": "Frau",
+        "other": "Andere"
+      }
+    },
+    "orientation": {
+      "title": "Wen möchtest du kennenlernen?",
+      "options": {
+        "straight": "Heterosexuell",
+        "gay": "Homosexuell",
+        "bisexual": "Bisexuell",
+        "other": "Andere"
+      }
+    },
+    "city": {
+      "title": "Wo wohnst du?",
+      "subtitle": "Dies hilft uns, dich mit Leuten in der Nähe zu verbinden.",
+      "placeholder": "Gib deine Stadt, dein Dorf ein...",
+      "fetchError": "Fehler beim Abrufen der Vorschläge."
+    },
+    "phone": {
+      "title": "Bestätige deine Nummer",
+      "subtitle": "Wir verwenden deine Nummer, um dein Konto zu sichern. Sie wird nicht geteilt.",
+      "searchCountry": "Suche nach einem Land...",
+      "sendCode": "Code senden",
+      "verifyTitle": "Gib den Code ein",
+      "verifySubtitle": "Ein Code wurde an {phone} gesendet",
+      "verified": "Bestätigt!",
+      "verifyButton": "Bestätigen",
+      "changeNumber": "Nummer ändern"
+    },
+    "final": {
+      "title": "Willkommen, {name}!",
+      "subtitle": "Dein Profil ist fertig. Es ist Zeit, tolle Leute zu entdecken.",
+      "tipTitle": "Profi-Tipp",
+      "tipBody": "Sei du selbst, teile deine Leidenschaften und habe keine Angst, den ersten Schritt zu machen!",
+      "cta": "Entdecken starten"
+    },
+    "photos": {
+      "title": "Zeig, wer du bist",
+      "subtitle": "Füge mindestens zwei Fotos hinzu. Das erste wird dein Hauptprofilbild sein.",
+      "profile": "Profil"
+    },
+    "bio": {
+      "title": "Erzähl uns von dir",
+      "subtitle": "Deine Biografie ist eine großartige Gelegenheit, deine Persönlichkeit zu zeigen.",
+      "placeholder": "Schreibe etwas Interessantes...",
+      "aiButton": "Mit KI generieren",
+      "aiError": "Entschuldigung, ein Fehler ist aufgetreten.",
+      "aiPrompt": "Generiere eine kurze und eingängige Dating-Profil-Bio (ca. 40-50 Wörter) auf Deutsch für eine Person des Geschlechts {gender}, die {age} Jahre alt ist, {interests} mag und in {city} lebt. Der Ton sollte authentisch sein und zu einem Gespräch einladen. Füge keine Hashtags hinzu."
+    },
+    "interests": {
+      "title": "Was sind deine Leidenschaften?",
+      "subtitle": "Wähle bis zu {count} Interessen.",
+      "searchPlaceholder": "Suche nach einem Interesse..."
+    }
+  },
+  "discovery": {
+    "interests": "Interessen",
+    "sendFlowersTo": "Blumen an {name} senden",
+    "yourBalance": "Dein Guthaben: {balance} Blumen",
+    "sendButton": "Sende {amount} Blume{plural}",
+    "sending": "Wird gesendet...",
+    "sent": "Blumen gesendet!",
+    "requestContact": "Kontakt anfordern",
+    "noProfiles": {
+      "title": "Das war's für den Moment!",
+      "subtitle": "Schau später wieder vorbei, um neue Leute zu sehen."
+    }
+  },
+  "likes": {
+    "title": "Sie mögen dich",
+    "subtitle": "Hier sind die Leute, denen dein Profil gefallen hat.",
+    "unlockProfileTitle": "Profil von {name} freischalten?",
+    "unlockProfileBody": "Dadurch wird ein Match erstellt und du kannst die erste Nachricht senden.",
+    "unlockCost": "Kosten: {cost}",
+    "unlockAndMatch": "Freischalten & Matchen"
+  },
+  "matches": {
+    "title": "Matches",
+    "startConversation": "Beginne das Gespräch!"
+  },
+  "chat": {
+    "placeholder": "Schreibe eine Nachricht...",
+    "giftSent": "Du hast {amount} Blume{plural} gesendet.",
+    "emojiCategories": {
+        "smileys": "Smileys",
+        "animals": "Tiere",
+        "food": "Essen",
+        "activities": "Aktivitäten"
+    }
+  },
+  "events": {
+    "title": "Events",
+    "create": "Erstellen",
+    "dashboard": {
+      "title": "Dashboard",
+      "created": "Erstellte Events",
+      "attendees": "Einzigartige Teilnehmer",
+      "popularTypes": "Beliebte Event-Typen",
+      "attendeesCount": "Teilnehmer"
+    },
+    "tabs": {
+      "upcoming": "Anstehend",
+      "past": "Vergangen",
+      "mine": "Meine Events"
+    },
+    "empty": {
+      "upcoming": {
+        "title": "Keine anstehenden Events",
+        "message": "Schau später wieder vorbei oder erstelle dein eigenes!"
+      },
+      "past": {
+        "title": "Keine vergangenen Events",
+        "message": "Events, an denen du teilgenommen hast, werden hier angezeigt."
+      },
+      "mine": {
+        "title": "Du hast keine Events erstellt",
+        "message": "Klicke auf 'Erstellen', um dein eigenes Treffen zu organisieren."
+      }
+    },
+    "card": {
+      "attendees": "{count} Teilnehmer"
+    },
+    "detail": {
+      "fee": "Teilnahmegebühr",
+      "location": "Ort",
+      "feeInPetals": "{count} Blütenblätter",
+      "description": "Beschreibung",
+      "qr": {
+        "creatorTitle": "Event-QR-Code",
+        "creatorDesc": "Teilnehmer scannen diesen Code, um sich für das Event anzumelden.",
+        "attendeeTitle": "Dein Ticket",
+        "attendeeDesc": "Zeige diesen Code am Eingang vor, um deine Teilnahme zu bestätigen."
+      },
+      "attendeesGrowth": "Teilnehmerwachstum",
+      "attendees": "Teilnehmer",
+      "invite": "Einladen",
+      "creatorActions": "Aktionen des Erstellers",
+      "deleteEvent": "Event löschen",
+      "leaveEvent": "Event verlassen",
+      "joinEvent": "Teilnehmen",
+      "joinEventWithFee": "Für {cost} Blütenblätter beitreten",
+      "shareFailed": "Teilen fehlgeschlagen. Bitte versuche es erneut.",
+      "shareUnsupported": "Teilen wird auf diesem Gerät nicht unterstützt.",
+      "manageEvent": "Event verwalten",
+      "myTicket": "Mein Ticket ansehen"
+    },
+    "scanner": {
+      "scanButton": "Ticket scannen",
+      "invalidTicket": "Ungültiges Ticket für dieses Event.",
+      "notRegistered": "Dieser Benutzer ist nicht für das Event registriert.",
+      "alreadyCheckedIn": "{name} wurde bereits eingecheckt.",
+      "success": "Check-in für {name} erfolgreich!",
+      "invalidQRCode": "Ungültiger oder unlesbarer QR-Code.",
+      "checkedInTooltip": "Eingecheckt"
+    },
+    "createModal": {
+      "title": "Event erstellen",
+      "coverImage": "Titelbild",
+      "eventTitle": "Event-Titel",
+      "description": "Beschreibung",
+      "date": "Datum",
+      "time": "Uhrzeit",
+      "location": "Ort",
+      "fee": "Gebühr in Blütenblättern (leer lassen, wenn kostenlos)",
+      "errors": {
+        "titleRequired": "Titel ist erforderlich.",
+        "titleMin": "Der Titel muss mindestens 5 Zeichen lang sein.",
+        "descriptionRequired": "Beschreibung ist erforderlich.",
+        "descriptionMin": "Die Beschreibung muss mindestens 10 Zeichen lang sein.",
+        "dateRequired": "Datum ist erforderlich.",
+        "timeRequired": "Uhrzeit ist erforderlich.",
+        "locationRequired": "Ort ist erforderlich.",
+        "imageRequired": "Ein Titelbild ist erforderlich.",
+        "feeInvalid": "Bitte gib eine gültige Zahl ein."
+      }
+    },
+    "joinModal": {
+      "title": "{title} beitreten?",
+      "confirmMessage": "Dies wird {cost} Blütenblätter von deinem Guthaben abziehen. Möchtest du bestätigen?",
+      "insufficientFunds": "Du hast nicht genügend Blütenblätter, um an diesem Event teilzunehmen.",
+      "confirmButton": "{cost} Blütenblätter bezahlen",
+      "buyButton": "Blütenblätter kaufen"
+    },
+    "inviteModal": {
+      "title": "Freunde einladen",
+      "searchPlaceholder": "Suche nach einem Freund...",
+      "empty": "Keine Freunde zum Einladen.",
+      "sendButton": "Sende {count} Einladung{plural}"
+    },
+    "deleteModal": {
+      "title": "Löschen bestätigen",
+      "message": "Bist du sicher, dass du das Event \"{title}\" löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden."
+    },
+    "customizeModal": {
+      "title": "Anzeige anpassen",
+      "layout": "Layout",
+      "layoutDefault": "Standard",
+      "layoutCompact": "Kompakt",
+      "backgroundColor": "Hintergrundfarbe",
+      "done": "Fertig"
+    }
+  }
+}

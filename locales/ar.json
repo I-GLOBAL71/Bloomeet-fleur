@@ -1,0 +1,298 @@
+{
+  "login": {
+    "title": "Aura",
+    "word1": "الأصالة.",
+    "word2": "التواصل.",
+    "word3": "الإخلاص.",
+    "word4": "الاكتشافات.",
+    "continueWithGoogle": "متابعة باستخدام Google",
+    "continueWithEmail": "أو متابعة باستخدام بريدك الإلكتروني",
+    "emailPlaceholder": "your@email.com",
+    "magicLinkButton": "الحصول على رابط سحري",
+    "back": "رجوع",
+    "magicLinkSentTitle": "تم إرسال الرابط السحري!",
+    "magicLinkSentBody": "يرجى التحقق من بريدك الوارد للاتصال بـ Aura.",
+    "termsPrefix": "من خلال المتابعة، فإنك توافق على",
+    "termsOfUse": "شروط الاستخدام",
+    "termsAnd": "و",
+    "privacyPolicy": "سياسة الخصوصية"
+  },
+  "profile": {
+    "aboutMe": "عني",
+    "interests": "الاهتمامات",
+    "language": "اللغة",
+    "petals": {
+      "yourPetals": "بتلاتك",
+      "petals": "بتلات",
+      "buy": "شراء",
+      "shopTitle": "متجر البتلات",
+      "shopSubtitle": "اشحن رصيدك لفتح الميزات.",
+      "popular": "شائع",
+      "or": "أو",
+      "customAmount": "مبلغ مخصص",
+      "customPlaceholder": "مثال: 75",
+      "estimatedPrice": "السعر المقدر"
+    },
+    "flowers": {
+      "yourFlowers": "الزهور التي تلقيتها",
+      "sendHistory": "سجل الإرسال",
+      "flowers": "زهور",
+      "withdraw": "سحب"
+    },
+    "history": {
+      "title": "سجل الإرسال",
+      "sentTo": "أرسلت إلى",
+      "emptyTitle": "لا توجد إرسالات",
+      "emptyBody": "سيظهر هنا سجل الزهور التي أرسلتها."
+    },
+    "editProfile": "تعديل الملف الشخصي",
+    "settings": "الإعدادات"
+  },
+    "common": {
+    "cancel": "إلغاء",
+    "flowers": "زهور",
+    "petals": "بتلات",
+    "back": "رجوع",
+    "continue": "متابعة",
+    "start": "ابدأ",
+    "you": "أنت",
+    "like": "إعجاب",
+    "nope": "تجاهل",
+    "match": "إنه تطابق!",
+    "matchMessage": "لقد أعجب كل منكما بالآخر!",
+    "sendMessage": "إرسال رسالة",
+    "continueDiscovering": "متابعة الاستكشاف",
+    "share": "مشاركة",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "confirm": "تأكيد",
+    "search": "بحث...",
+    "kmAway": "{distance} كم",
+    "free": "مجاني",
+    "save": "حفظ"
+  },
+  "onboarding": {
+    "progress": "خطوة {step} من {total}",
+    "welcome": {
+      "title": "أنشئ ملفًا شخصيًا يعكسك.",
+      "subtitle": "الأصالة هي بداية كل قصة جميلة. لنصنع قصتك.",
+      "cta": "إنشاء ملفي الشخصي"
+    },
+    "name": {
+      "title": "ما هو اسمك؟",
+      "subtitle": "سيظهر اسمك الأول في ملفك الشخصي.",
+      "placeholder": "أدخل اسمك الأول"
+    },
+    "birthdate": {
+      "title": "ما هو تاريخ ميلادك؟",
+      "subtitle": "سيظهر عمرك بشكل عام.",
+      "age": "عمرك {age} سنة"
+    },
+    "gender": {
+      "title": "كيف تعرف عن نفسك؟",
+      "options": {
+        "male": "رجل",
+        "female": "امرأة",
+        "other": "آخر"
+      }
+    },
+    "orientation": {
+      "title": "من تود أن تقابل؟",
+      "options": {
+        "straight": "مغاير(ة) الجنس",
+        "gay": "مثلي(ة) الجنس",
+        "bisexual": "مزدوج(ة) המיול",
+        "other": "آخر"
+      }
+    },
+    "city": {
+      "title": "أين تعيش؟",
+      "subtitle": "هذا يساعدنا على توصيلك بأشخاص قريبين.",
+      "placeholder": "أدخل مدينتك، قريتك...",
+      "fetchError": "فشل في جلب الاقتراحات."
+    },
+    "phone": {
+      "title": "تحقق من رقمك",
+      "subtitle": "نستخدم رقمك لتأمين حسابك. لن يتم مشاركته.",
+      "searchCountry": "ابحث عن بلد...",
+      "sendCode": "إرسال الرمز",
+      "verifyTitle": "أدخل الرمز",
+      "verifySubtitle": "تم إرسال رمز إلى {phone}",
+      "verified": "تم التحقق!",
+      "verifyButton": "تحقق",
+      "changeNumber": "تغيير الرقم"
+    },
+    "final": {
+      "title": "أهلاً بك، {name}!",
+      "subtitle": "ملفك الشخصي جاهز. حان الوقت لاكتشاف أشخاص رائعين.",
+      "tipTitle": "نصيحة احترافية",
+      "tipBody": "كن على طبيعتك، شارك شغفك، ولا تخف من اتخاذ الخطوة الأولى!",
+      "cta": "ابدأ الاستكشاف"
+    },
+    "photos": {
+      "title": "أظهر من أنت",
+      "subtitle": "أضف صورتين على الأقل. الأولى ستكون صورة ملفك الشخصي الرئيسية.",
+      "profile": "الملف الشخصي"
+    },
+    "bio": {
+      "title": "أخبرنا عن نفسك",
+      "subtitle": "سيرتك الذاتية فرصة رائعة لإظهار شخصيتك.",
+      "placeholder": "اكتب شيئًا مثيرًا للاهتمام...",
+      "aiButton": "أنشئ بالذكاء الاصطناعي",
+      "aiError": "عذراً، حدث خطأ ما.",
+      "aiPrompt": "أنشئ سيرة ذاتية قصيرة وجذابة لملف تعارف (حوالي 40-50 كلمة) باللغة العربية لشخص من جنس {gender}، عمره {age} عامًا، يحب {interests} ويعيش في {city}. يجب أن تكون النبرة أصيلة وتدعو إلى المحادثة. لا تقم بتضمين أي وسوم."
+    },
+    "interests": {
+      "title": "ما الذي يثير شغفك؟",
+      "subtitle": "اختر ما يصل إلى {count} اهتمامات.",
+      "searchPlaceholder": "ابحث عن اهتمام..."
+    }
+  },
+  "discovery": {
+    "interests": "الاهتمامات",
+    "sendFlowersTo": "إرسال زهور إلى {name}",
+    "yourBalance": "رصيدك: {balance} زهور",
+    "sendButton": "إرسال {amount} زهرة",
+    "sending": "جارٍ الإرسال...",
+    "sent": "تم إرسال الزهور!",
+    "requestContact": "طلب معلومات الاتصال",
+    "noProfiles": {
+      "title": "هذا كل شيء في الوقت الحالي!",
+      "subtitle": "عد لاحقًا لرؤية أشخاص جدد."
+    }
+  },
+  "likes": {
+    "title": "هم معجبون بك",
+    "subtitle": "هؤلاء هم الأشخاص الذين أعجبوا بملفك الشخصي.",
+    "unlockProfileTitle": "فتح ملف {name} الشخصي؟",
+    "unlockProfileBody": "سيؤدي هذا إلى إنشاء تطابق ويسمح لك بإرسال الرسالة الأولى.",
+    "unlockCost": "التكلفة: {cost}",
+    "unlockAndMatch": "فتح وتطابق"
+  },
+  "matches": {
+    "title": "التطابقات",
+    "startConversation": "ابدأ المحادثة!"
+  },
+  "chat": {
+    "placeholder": "اكتب رسالة...",
+    "giftSent": "لقد أرسلت {amount} زهرة.",
+     "emojiCategories": {
+        "smileys": "وجوه ضاحكة",
+        "animals": "حيوانات",
+        "food": "طعام",
+        "activities": "أنشطة"
+    }
+  },
+  "events": {
+    "title": "الأحداث",
+    "create": "إنشاء",
+    "dashboard": {
+      "title": "لوحة التحكم",
+      "created": "الأحداث التي تم إنشاؤها",
+      "attendees": "الحاضرون الفريدون",
+      "popularTypes": "أنواع الأحداث الشائعة",
+      "attendeesCount": "الحضور"
+    },
+    "tabs": {
+      "upcoming": "القادمة",
+      "past": "الماضية",
+      "mine": "أحداثي"
+    },
+    "empty": {
+      "upcoming": {
+        "title": "لا توجد أحداث قادمة",
+        "message": "تحقق مرة أخرى لاحقًا أو أنشئ حدثًا خاصًا بك!"
+      },
+      "past": {
+        "title": "لا توجد أحداث ماضية",
+        "message": "ستظهر الأحداث التي حضرتها هنا."
+      },
+      "mine": {
+        "title": "لم تقم بإنشاء أي أحداث",
+        "message": "انقر على 'إنشاء' لتنظيم لقاء خاص بك."
+      }
+    },
+    "card": {
+      "attendees": "{count} حاضر"
+    },
+    "detail": {
+      "fee": "رسوم المشاركة",
+      "location": "الموقع",
+      "feeInPetals": "{count} بتلات",
+      "description": "الوصف",
+      "qr": {
+        "creatorTitle": "رمز QR للحدث",
+        "creatorDesc": "سيقوم الحاضرون بمسح هذا الرمز لتسجيل الدخول إلى الحدث.",
+        "attendeeTitle": "تذكرتك",
+        "attendeeDesc": "قدّم هذا الرمز عند المدخل لتأكيد حضورك."
+      },
+      "attendeesGrowth": "نمو الحضور",
+      "attendees": "الحاضرون",
+      "invite": "دعوة",
+      "creatorActions": "إجراءات المنشئ",
+      "deleteEvent": "حذف الحدث",
+      "leaveEvent": "مغادرة الحدث",
+      "joinEvent": "انضمام",
+      "joinEventWithFee": "انضم مقابل {cost} بتلات",
+      "shareFailed": "فشلت المشاركة. يرجى المحاولة مرة أخرى.",
+      "shareUnsupported": "المشاركة غير مدعومة على هذا الجهاز.",
+      "manageEvent": "إدارة الحدث",
+      "myTicket": "عرض تذكرتي"
+    },
+    "scanner": {
+      "scanButton": "مسح تذكرة",
+      "invalidTicket": "تذكرة غير صالحة لهذا الحدث.",
+      "notRegistered": "هذا المستخدم غير مسجل في الحدث.",
+      "alreadyCheckedIn": "تم تسجيل {name} بالفعل.",
+      "success": "تم تسجيل الدخول بنجاح لـ {name}!",
+      "invalidQRCode": "رمز QR غير صالح أو غير قابل للقراءة.",
+      "checkedInTooltip": "تم تسجيل الدخول"
+    },
+    "createModal": {
+      "title": "إنشاء حدث",
+      "coverImage": "صورة الغلاف",
+      "eventTitle": "عنوان الحدث",
+      "description": "الوصف",
+      "date": "التاريخ",
+      "time": "الوقت",
+      "location": "الموقع",
+      "fee": "الرسوم بالبتلات (اتركه فارغًا إذا كان مجانيًا)",
+      "errors": {
+        "titleRequired": "العنوان مطلوب.",
+        "titleMin": "يجب أن يتكون العنوان من 5 أحرف على الأقل.",
+        "descriptionRequired": "الوصف مطلوب.",
+        "descriptionMin": "يجب أن يتكون الوصف من 10 أحرف على الأقل.",
+        "dateRequired": "التاريخ مطلوب.",
+        "timeRequired": "الوقت مطلوب.",
+        "locationRequired": "الموقع مطلوب.",
+        "imageRequired": "صورة الغلاف مطلوبة.",
+        "feeInvalid": "الرجاء إدخال رقم صالح."
+      }
+    },
+    "joinModal": {
+      "title": "الانضمام إلى {title}؟",
+      "confirmMessage": "سيؤدي هذا إلى خصم {cost} بتلات من رصيدك. هل تريد التأكيد؟",
+      "insufficientFunds": "ليس لديك ما يكفي من البتلات للانضمام إلى هذا الحدث.",
+      "confirmButton": "دفع {cost} بتلات",
+      "buyButton": "شراء بتلات"
+    },
+    "inviteModal": {
+      "title": "دعوة أصدقاء",
+      "searchPlaceholder": "ابحث عن صديق...",
+      "empty": "لا يوجد أصدقاء لدعوتهم.",
+      "sendButton": "إرسال {count} دعوة"
+    },
+    "deleteModal": {
+      "title": "تأكيد الحذف",
+      "message": "هل أنت متأكد من أنك تريد حذف الحدث \"{title}\"؟ هذا الإجراء لا يمكن التراجع عنه."
+    },
+    "customizeModal": {
+      "title": "تخصيص العرض",
+      "layout": "التخطيط",
+      "layoutDefault": "افتراضي",
+      "layoutCompact": "مضغوط",
+      "backgroundColor": "لون الخلفية",
+      "done": "تم"
+    }
+  }
+}

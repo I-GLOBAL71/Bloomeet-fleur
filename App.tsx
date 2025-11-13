@@ -9,6 +9,7 @@ import ProfileView from './components/ProfileView';
 import BottomNav from './components/BottomNav';
 import OnboardingView from './components/OnboardingView';
 import EventsView from './components/EventsView';
+import { LanguageProvider, useTranslation } from './hooks/useTranslation';
 
 const pageVariants = {
   initial: {
@@ -31,7 +32,7 @@ const pageTransition = {
   duration: 0.4,
 };
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false);
   const [currentView, setCurrentView] = useState<AppView>(AppView.Discovery);
@@ -74,6 +75,7 @@ const App: React.FC = () => {
       <main className="flex-grow relative overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
+            id="main-scroll-container"
             key={currentView}
             initial="initial"
             animate="in"
@@ -90,5 +92,12 @@ const App: React.FC = () => {
     </div>
   );
 };
+
+const App: React.FC = () => (
+  <LanguageProvider>
+    <AppContent />
+  </LanguageProvider>
+);
+
 
 export default App;

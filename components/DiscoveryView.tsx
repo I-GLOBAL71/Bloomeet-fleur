@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { UserProfile } from '../types';
 import { HeartIcon, XIcon, StarIcon, FlowerIcon, PhoneIcon, CheckIcon, UndoIcon } from './Icons';
+import { useTranslation } from '../hooks/useTranslation';
 
 const mockProfiles: UserProfile[] = [
   { id: 1, name: 'Chloé', age: 26, bio: 'Loves hiking, art galleries, and trying new recipes. Looking for a genuine connection.', interests: ['Hiking', 'Art', 'Cooking'], photos: ['https://picsum.photos/seed/woman1/800/1200', 'https://picsum.photos/seed/w1p2/800/1200', 'https://picsum.photos/seed/w1p3/800/1200'], distance: 5, flowerBalance: 15 },
@@ -16,6 +17,7 @@ const LIFT_THRESHOLD = -60;
 const ANIMATION_DURATION = 300;
 
 const ProfileDetailModal: React.FC<{ profile: UserProfile; onClose: () => void; }> = ({ profile, onClose }) => {
+    const { t } = useTranslation();
     return (
         <motion.div
             className="fixed inset-0 bg-black/60 z-30 flex justify-center items-center p-4"
@@ -53,14 +55,14 @@ const ProfileDetailModal: React.FC<{ profile: UserProfile; onClose: () => void; 
                         <p className="mt-4 text-lg text-gray-700">{profile.bio}</p>
                         
                         <div className="mt-6">
-                            <h3 className="font-semibold text-lg text-gray-800">Centres d'intérêt</h3>
+                            <h3 className="font-semibold text-lg text-gray-800">{t('discovery.interests')}</h3>
                             <div className="flex flex-wrap gap-2 mt-2">
                                 {profile.interests.map(interest => (
                                     <span key={interest} className="bg-rose-100 text-rose-800 text-sm font-medium px-3 py-1 rounded-full">{interest}</span>
                                 ))}
                             </div>
                         </div>
-                         <p className="text-sm text-gray-500 mt-6">{profile.distance} km</p>
+                         <p className="text-sm text-gray-500 mt-6">{t('common.kmAway', { distance: profile.distance })}</p>
                     </div>
                 </div>
                 
@@ -79,6 +81,7 @@ const SendFlowerModal: React.FC<{
     onSend: (amount: number) => void;
     sendingState: 'idle' | 'sending' | 'sent';
 }> = ({ recipientName, currentUserBalance, onClose, onSend, sendingState }) => {
+    const { t } = useTranslation();
     const [amount, setAmount] = useState(1);
     const amounts = [1, 5, 10];
 
@@ -91,8 +94,8 @@ const SendFlowerModal: React.FC<{
     const idleContent = (
         <>
             <FlowerIcon className="w-16 h-16 text-rose-400 mx-auto animate-pulse" />
-            <h2 className="font-display text-2xl font-bold mt-4 text-gray-800">Envoyer des fleurs à {recipientName}</h2>
-            <p className="text-gray-500 mt-2">Votre solde : <span className="font-semibold">{currentUserBalance}</span> fleurs</p>
+            <h2 className="font-display text-2xl font-bold mt-4 text-gray-800">{t('discovery.sendFlowersTo', { name: recipientName })}</h2>
+            <p className="text-gray-500 mt-2">{t('discovery.yourBalance', { balance: currentUserBalance })}</p>
             <div className="flex justify-center gap-3 my-6">
                 {amounts.map(a => (
                     <button key={a} onClick={() => setAmount(a)} className={`px-6 py-3 rounded-full font-bold border-2 transition-all ${amount === a ? 'bg-rose-500 text-white border-rose-500' : 'bg-gray-100 text-gray-700 border-gray-200'}`}>
@@ -101,16 +104,16 @@ const SendFlowerModal: React.FC<{
                 ))}
             </div>
             <button onClick={handleSend} disabled={currentUserBalance < amount} className="w-full py-3 px-4 rounded-lg text-white bg-rose-500 font-semibold hover:bg-rose-600 transition disabled:bg-gray-300 disabled:cursor-not-allowed">
-                Envoyer {amount} fleur{amount > 1 ? 's' : ''}
+                {t('discovery.sendButton', { amount, plural: amount > 1 ? 's' : '' })}
             </button>
-            <button onClick={onClose} className="w-full mt-3 py-2 text-gray-600 font-semibold">Annuler</button>
+            <button onClick={onClose} className="w-full mt-3 py-2 text-gray-600 font-semibold">{t('common.cancel')}</button>
         </>
     );
 
     const sendingContent = (
         <div className="flex flex-col items-center justify-center py-10 min-h-[305px]">
             <div className="w-12 h-12 border-4 border-t-rose-500 border-gray-200 rounded-full animate-spin"></div>
-            <p className="mt-4 text-gray-600 font-semibold">Envoi en cours...</p>
+            <p className="mt-4 text-gray-600 font-semibold">{t('discovery.sending')}</p>
         </div>
     );
 
@@ -121,7 +124,7 @@ const SendFlowerModal: React.FC<{
                     <CheckIcon className="w-10 h-10 text-white" />
                 </div>
             </motion.div>
-            <h2 className="font-display text-2xl font-bold mt-6 text-gray-800">Fleurs envoyées !</h2>
+            <h2 className="font-display text-2xl font-bold mt-6 text-gray-800">{t('discovery.sent')}</h2>
         </div>
     );
 
@@ -157,6 +160,7 @@ const SendFlowerModal: React.FC<{
 };
 
 const DiscoveryView: React.FC = () => {
+  const { t } = useTranslation();
   const [profiles, setProfiles] = useState(mockProfiles);
   const [history, setHistory] = useState<UserProfile[]>([]);
   const [selectedProfile, setSelectedProfile] = useState<UserProfile | null>(null);
@@ -220,7 +224,7 @@ const DiscoveryView: React.FC = () => {
 
   const handleDragStart = (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
     // Prevent drag from starting if the click is on the flower button
-    if ((e.target as HTMLElement).closest('button[aria-label="Envoyer des fleurs"]')) {
+    if ((e.target as HTMLElement).closest('button[aria-label="Send flowers"]')) {
       return;
     }
 
@@ -337,14 +341,14 @@ const DiscoveryView: React.FC = () => {
         <div className="mb-4 flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-md">
             <FlowerIcon className="w-6 h-6 text-rose-500" />
             <span className="font-bold text-lg text-gray-800">{currentUserFlowerBalance}</span>
-            <span className="text-sm text-gray-500 -ml-1">fleurs</span>
+            <span className="text-sm text-gray-500 -ml-1">{t('common.flowers')}</span>
        </div>
 
        <div className="relative w-full max-w-sm h-[70vh] flex-shrink-0">
           {!currentProfile ? (
             <div className="h-full w-full flex flex-col justify-center items-center bg-gray-100 rounded-2xl">
-              <h3 className="text-2xl font-bold text-gray-700">That's everyone for now!</h3>
-              <p className="text-gray-500 mt-2">Check back later for new people.</p>
+              <h3 className="text-2xl font-bold text-gray-700">{t('discovery.noProfiles.title')}</h3>
+              <p className="text-gray-500 mt-2">{t('discovery.noProfiles.subtitle')}</p>
             </div>
           ) : (
             <>
@@ -371,10 +375,10 @@ const DiscoveryView: React.FC = () => {
                   <img src={currentProfile.photos[0]} alt={currentProfile.name} className="w-full h-full object-cover pointer-events-none" />
                   <div className="absolute inset-0 pointer-events-none">
                     <div className="absolute top-12 left-6 -rotate-12 transform transition-opacity" style={{opacity: likeOpacity, willChange: 'opacity'}}>
-                      <span className="text-4xl font-display font-bold text-green-400 border-4 border-green-400 rounded-lg px-4 py-1 tracking-wider">LIKE</span>
+                      <span className="text-4xl font-display font-bold text-green-400 border-4 border-green-400 rounded-lg px-4 py-1 tracking-wider">{t('common.like')}</span>
                     </div>
                     <div className="absolute top-12 right-6 rotate-12 transform transition-opacity" style={{opacity: nopeOpacity, willChange: 'opacity'}}>
-                      <span className="text-4xl font-display font-bold text-rose-500 border-4 border-rose-500 rounded-lg px-4 py-1 tracking-wider">NOPE</span>
+                      <span className="text-4xl font-display font-bold text-rose-500 border-4 border-rose-500 rounded-lg px-4 py-1 tracking-wider">{t('common.nope')}</span>
                     </div>
                     <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent p-6 text-white flex flex-col justify-end">
                         <div className="flex justify-between items-end">
@@ -385,13 +389,13 @@ const DiscoveryView: React.FC = () => {
                                     setShowSendFlowerModal(true);
                                 }}
                                 className="p-3 bg-white/20 rounded-full text-white backdrop-blur-sm hover:bg-white/30 transition-colors active:scale-90 pointer-events-auto"
-                                aria-label="Envoyer des fleurs"
+                                aria-label="Send flowers"
                              >
                                 <FlowerIcon className="w-7 h-7" />
                              </button>
                         </div>
                         <p className="mt-2 text-lg line-clamp-2">{currentProfile.bio}</p>
-                        <p className="text-sm opacity-80">{currentProfile.distance} km</p>
+                        <p className="text-sm opacity-80">{t('common.kmAway', { distance: currentProfile.distance })}</p>
                     </div>
                   </div>
                   <AnimatePresence>
@@ -405,11 +409,11 @@ const DiscoveryView: React.FC = () => {
                       >
                           <button onClick={() => setShowSendFlowerModal(true)} className="w-full flex items-center justify-center gap-3 bg-rose-500 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-transform hover:scale-105 active:scale-95">
                               <FlowerIcon className="w-6 h-6" />
-                              Envoyer des fleurs
+                              {t('discovery.sendFlowersTo', { name: '' }).trim()}
                           </button>
                           <button className="w-full flex items-center justify-center gap-3 bg-slate-600 text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-transform hover:scale-105 active:scale-95">
                               <PhoneIcon className="w-5 h-5" />
-                              Demander le contact
+                              {t('discovery.requestContact')}
                           </button>
                       </motion.div>
                     )}

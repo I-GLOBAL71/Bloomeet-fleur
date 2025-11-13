@@ -1,0 +1,298 @@
+{
+  "login": {
+    "title": "Aura",
+    "word1": "Authenticity.",
+    "word2": "Connections.",
+    "word3": "Sincerity.",
+    "word4": "Discoveries.",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithEmail": "Or continue with your email",
+    "emailPlaceholder": "your@email.com",
+    "magicLinkButton": "Receive a magic link",
+    "back": "Back",
+    "magicLinkSentTitle": "Magic link sent!",
+    "magicLinkSentBody": "Please check your inbox to connect to Aura.",
+    "termsPrefix": "By continuing, you agree to our",
+    "termsOfUse": "Terms of Use",
+    "termsAnd": "and our",
+    "privacyPolicy": "Privacy Policy"
+  },
+  "profile": {
+    "aboutMe": "About me",
+    "interests": "Interests",
+    "language": "Language",
+    "petals": {
+      "yourPetals": "Your Petals",
+      "petals": "petals",
+      "buy": "Buy",
+      "shopTitle": "Petal Shop",
+      "shopSubtitle": "Top up your balance to unlock features.",
+      "popular": "Popular",
+      "or": "OR",
+      "customAmount": "Custom amount",
+      "customPlaceholder": "e.g., 75",
+      "estimatedPrice": "Estimated price"
+    },
+    "flowers": {
+      "yourFlowers": "Your Flowers Received",
+      "sendHistory": "Sending History",
+      "flowers": "flowers",
+      "withdraw": "Withdraw"
+    },
+    "history": {
+      "title": "Sending History",
+      "sentTo": "Sent to",
+      "emptyTitle": "No sends",
+      "emptyBody": "The history of your sent flowers will appear here."
+    },
+    "editProfile": "Edit Profile",
+    "settings": "Settings"
+  },
+  "common": {
+    "cancel": "Cancel",
+    "flowers": "flowers",
+    "petals": "petals",
+    "back": "Back",
+    "continue": "Continue",
+    "start": "Start",
+    "you": "You",
+    "like": "LIKE",
+    "nope": "NOPE",
+    "match": "It's a Match!",
+    "matchMessage": "You and {name} liked each other!",
+    "sendMessage": "Send a message",
+    "continueDiscovering": "Continue discovering",
+    "share": "Share",
+    "delete": "Delete",
+    "edit": "Edit",
+    "confirm": "Confirm",
+    "search": "Search...",
+    "kmAway": "{distance} km away",
+    "free": "FREE",
+    "save": "Save"
+  },
+  "onboarding": {
+    "progress": "Step {step} of {total}",
+    "welcome": {
+      "title": "Create a profile that reflects you.",
+      "subtitle": "Authenticity is the beginning of every beautiful story. Let's shape yours.",
+      "cta": "Create my profile"
+    },
+    "name": {
+      "title": "What's your name?",
+      "subtitle": "Your first name will appear on your profile.",
+      "placeholder": "Enter your first name"
+    },
+    "birthdate": {
+      "title": "What's your date of birth?",
+      "subtitle": "Your age will be publicly visible.",
+      "age": "You are {age} years old"
+    },
+    "gender": {
+      "title": "How do you identify?",
+      "options": {
+        "male": "Man",
+        "female": "Woman",
+        "other": "Other"
+      }
+    },
+    "orientation": {
+      "title": "Who would you like to meet?",
+      "options": {
+        "straight": "Straight",
+        "gay": "Gay",
+        "bisexual": "Bisexual",
+        "other": "Other"
+      }
+    },
+    "city": {
+      "title": "Where do you live?",
+      "subtitle": "This helps us connect you with people nearby.",
+      "placeholder": "Enter your city, village...",
+      "fetchError": "Failed to fetch suggestions."
+    },
+    "phone": {
+      "title": "Verify your number",
+      "subtitle": "We use your number to secure your account. It will not be shared.",
+      "searchCountry": "Search for a country...",
+      "sendCode": "Send code",
+      "verifyTitle": "Enter the code",
+      "verifySubtitle": "A code was sent to {phone}",
+      "verified": "Verified!",
+      "verifyButton": "Verify",
+      "changeNumber": "Change number"
+    },
+    "final": {
+      "title": "Welcome, {name}!",
+      "subtitle": "Your profile is ready. It's time to discover amazing people.",
+      "tipTitle": "Pro tip",
+      "tipBody": "Be yourself, share your passions, and don't be afraid to make the first move!",
+      "cta": "Start discovering"
+    },
+    "photos": {
+      "title": "Show who you are",
+      "subtitle": "Add at least two photos. The first will be your main profile picture.",
+      "profile": "Profile"
+    },
+    "bio": {
+      "title": "Tell us about yourself",
+      "subtitle": "Your bio is a great opportunity to show your personality.",
+      "placeholder": "Write something interesting...",
+      "aiButton": "Generate with AI",
+      "aiError": "Sorry, an error occurred.",
+      "aiPrompt": "Generate a short and catchy dating profile bio (about 40-50 words) in English for a person of gender {gender}, who is {age} years old, who likes {interests} and lives in {city}. The tone should be authentic and invite conversation. Do not include hashtags."
+    },
+    "interests": {
+      "title": "What are you passionate about?",
+      "subtitle": "Choose up to {count} interests.",
+      "searchPlaceholder": "Search for an interest..."
+    }
+  },
+  "discovery": {
+    "interests": "Interests",
+    "sendFlowersTo": "Send flowers to {name}",
+    "yourBalance": "Your balance: {balance} flowers",
+    "sendButton": "Send {amount} flower{plural}",
+    "sending": "Sending...",
+    "sent": "Flowers sent!",
+    "requestContact": "Request contact info",
+    "noProfiles": {
+      "title": "That's everyone for now!",
+      "subtitle": "Check back later for new people."
+    }
+  },
+  "likes": {
+    "title": "They like you",
+    "subtitle": "Here are the people who liked your profile.",
+    "unlockProfileTitle": "Unlock {name}'s profile?",
+    "unlockProfileBody": "This will create a match and allow you to send the first message.",
+    "unlockCost": "Cost: {cost}",
+    "unlockAndMatch": "Unlock & Match"
+  },
+  "matches": {
+    "title": "Matches",
+    "startConversation": "Start the conversation!"
+  },
+  "chat": {
+    "placeholder": "Write a message...",
+    "giftSent": "You sent {amount} flower{plural}.",
+    "emojiCategories": {
+        "smileys": "Smileys",
+        "animals": "Animals",
+        "food": "Food",
+        "activities": "Activities"
+    }
+  },
+  "events": {
+    "title": "Events",
+    "create": "Create",
+    "dashboard": {
+      "title": "Dashboard",
+      "created": "Events Created",
+      "attendees": "Unique Attendees",
+      "popularTypes": "Popular Event Types",
+      "attendeesCount": "Attendees"
+    },
+    "tabs": {
+      "upcoming": "Upcoming",
+      "past": "Past",
+      "mine": "My Events"
+    },
+    "empty": {
+      "upcoming": {
+        "title": "No upcoming events",
+        "message": "Check back later or create your own!"
+      },
+      "past": {
+        "title": "No past events",
+        "message": "Events you've attended will appear here."
+      },
+      "mine": {
+        "title": "You haven't created any events",
+        "message": "Click 'Create' to organize your own meetup."
+      }
+    },
+    "card": {
+      "attendees": "{count} attendees"
+    },
+    "detail": {
+      "fee": "Joining Fee",
+      "location": "Location",
+      "feeInPetals": "{count} petals",
+      "description": "Description",
+      "qr": {
+        "creatorTitle": "Event QR Code",
+        "creatorDesc": "Attendees will scan this code to check-in to the event.",
+        "attendeeTitle": "Your Ticket",
+        "attendeeDesc": "Present this code at the entrance to validate your attendance."
+      },
+      "attendeesGrowth": "Attendee Growth",
+      "attendees": "Attendees",
+      "invite": "Invite",
+      "creatorActions": "Creator Actions",
+      "deleteEvent": "Delete Event",
+      "leaveEvent": "Leave Event",
+      "joinEvent": "Join",
+      "joinEventWithFee": "Join for {cost} petals",
+      "shareFailed": "Sharing failed. Please try again.",
+      "shareUnsupported": "Sharing is not supported on this device.",
+      "manageEvent": "Manage Event",
+      "myTicket": "View My Ticket"
+    },
+    "scanner": {
+      "scanButton": "Scan Ticket",
+      "invalidTicket": "Invalid ticket for this event.",
+      "notRegistered": "This user is not registered for the event.",
+      "alreadyCheckedIn": "{name} has already been checked in.",
+      "success": "Check-in successful for {name}!",
+      "invalidQRCode": "Invalid or unreadable QR code.",
+      "checkedInTooltip": "Checked-in"
+    },
+    "createModal": {
+      "title": "Create an Event",
+      "coverImage": "Cover Image",
+      "eventTitle": "Event Title",
+      "description": "Description",
+      "date": "Date",
+      "time": "Time",
+      "location": "Location",
+      "fee": "Fee in petals (leave empty if free)",
+      "errors": {
+        "titleRequired": "Title is required.",
+        "titleMin": "Title must be at least 5 characters.",
+        "descriptionRequired": "Description is required.",
+        "descriptionMin": "Description must be at least 10 characters.",
+        "dateRequired": "Date is required.",
+        "timeRequired": "Time is required.",
+        "locationRequired": "Location is required.",
+        "imageRequired": "A cover image is required.",
+        "feeInvalid": "Please enter a valid number."
+      }
+    },
+     "joinModal": {
+      "title": "Join {title}?",
+      "confirmMessage": "This will deduct {cost} petals from your balance. Do you want to confirm?",
+      "insufficientFunds": "You don't have enough petals to join this event.",
+      "confirmButton": "Pay {cost} petals",
+      "buyButton": "Buy Petals"
+    },
+    "inviteModal": {
+      "title": "Invite Friends",
+      "searchPlaceholder": "Search for a friend...",
+      "empty": "No friends to invite.",
+      "sendButton": "Send {count} invitation{plural}"
+    },
+    "deleteModal": {
+      "title": "Confirm Deletion",
+      "message": "Are you sure you want to delete the event \"{title}\"? This action is irreversible."
+    },
+    "customizeModal": {
+      "title": "Customize Display",
+      "layout": "Layout",
+      "layoutDefault": "Default",
+      "layoutCompact": "Compact",
+      "backgroundColor": "Background Color",
+      "done": "Done"
+    }
+  }
+}
