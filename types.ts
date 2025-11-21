@@ -1,10 +1,12 @@
 
+
 export enum AppView {
   Discovery,
   Likes,
   Matches,
   Profile,
   Events,
+  Admin,
 }
 
 export interface UserProfile {
@@ -64,4 +66,11 @@ export interface FlowerTransaction {
   recipientAvatar: string;
   amount: number;
   date: string;
+}
+
+export interface LanguageContextType {
+  language: string;
+  setLanguage: (lang: string) => void;
+  t: (key: string, replacements?: { [key: string]: string | number }) => string;
+  isLoading: boolean;
 }

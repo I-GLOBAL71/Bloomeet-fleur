@@ -1,10 +1,14 @@
 
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FlowerIcon, HistoryIcon, XIcon, PlusIcon, SparklesIcon, PetalIcon, EditIcon, SearchIcon } from './Icons';
+import { FlowerIcon, HistoryIcon, XIcon, PlusIcon, SparklesIcon, PetalIcon, EditIcon, SearchIcon, CameraIcon, TrashIcon, ShieldIcon } from './Icons';
 import { FlowerTransaction } from '../types';
-import { useTranslation } from '../hooks/useTranslation';
+import { useTranslation } from '../contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
+
+interface ProfileViewProps {
+  onNavigateAdmin?: () => void;
+}
 
 const initialUserProfile = {
   name: 'Marie',
@@ -100,7 +104,7 @@ const BuyPetalsModal: React.FC<{
     onBuy: (amount: number) => void;
 }> = ({ onClose, onBuy }) => {
     const { t } = useTranslation();
-    const [customAmount, setCustomAmount] = useState('');
+    const [customAmount, setCustomAmount] = React.useState('');
     const customPrice = (Number(customAmount) * 0.02).toFixed(2);
 
     return (
@@ -194,8 +198,8 @@ const EditInterestsModal: React.FC<{
   onSave: (interests: string[]) => void;
 }> = ({ currentInterests, onClose, onSave }) => {
   const { t } = useTranslation();
-  const [selected, setSelected] = useState<string[]>(currentInterests);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [selected, setSelected] = React.useState<string[]>(currentInterests);
+  const [searchTerm, setSearchTerm] = React.useState('');
 
   const toggleInterest = (interest: string) => {
     if (selected.includes(interest)) {
@@ -268,17 +272,17 @@ const EditInterestsModal: React.FC<{
 };
 
 
-const ProfileView: React.FC = () => {
+const ProfileView: React.FC<ProfileViewProps> = ({ onNavigateAdmin }) => {
   const { t } = useTranslation();
-  const [profile, setProfile] = useState(initialUserProfile);
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedProfile, setEditedProfile] = useState(profile);
+  const [profile, setProfile] = React.useState(initialUserProfile);
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [editedProfile, setEditedProfile] = React.useState(profile);
 
-  const [showHistoryModal, setShowHistoryModal] = useState(false);
-  const [showBuyPetalsModal, setShowBuyPetalsModal] = useState(false);
-  const [showInterestsModal, setShowInterestsModal] = useState(false);
+  const [showHistoryModal, setShowHistoryModal] = React.useState(false);
+  const [showBuyPetalsModal, setShowBuyPetalsModal] = React.useState(false);
+  const [showInterestsModal, setShowInterestsModal] = React.useState(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     try {
       const savedProfile = localStorage.getItem(PROFILE_STORAGE_KEY);
       if (savedProfile) {
@@ -289,7 +293,7 @@ const ProfileView: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     try {
       localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
     } catch (error) {
@@ -315,6 +319,19 @@ const ProfileView: React.FC = () => {
     setEditedProfile({ ...editedProfile, [e.target.name]: e.target.value });
   };
 
+  const handleMainPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const newPhotos = [...editedProfile.photos];
+            newPhotos[0] = reader.result as string;
+            setEditedProfile(prev => ({ ...prev, photos: newPhotos }));
+        };
+        reader.readAsDataURL(file);
+    }
+  };
+
   const handleInterestsSave = (newInterests: string[]) => {
       setEditedProfile({ ...editedProfile, interests: newInterests });
   };
@@ -322,14 +339,29 @@ const ProfileView: React.FC = () => {
   const handleBuyPetals = (amount: number) => {
     if (amount <= 0) return;
     setProfile(prev => ({...prev, petalBalance: (prev.petalBalance || 0) + amount }));
+    setEditedProfile(prev => ({...prev, petalBalance: (prev.petalBalance || 0) + amount }));
     setShowBuyPetalsModal(false);
   };
 
   return (
-    <div className="bg-gray-50">
+    <div className="bg-gray-50 pb-24">
       <div className="relative">
-        <img src={profile.photos[0]} alt={profile.name} className="w-full h-96 object-cover" />
+        <img src={(isEditing ? editedProfile : profile).photos[0]} alt={profile.name} className="w-full h-96 object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        {isEditing && (
+            <>
+                <label htmlFor="main-photo-upload" className="absolute bottom-4 right-4 bg-white p-3 rounded-full shadow-lg cursor-pointer hover:bg-gray-100 transition-transform transform hover:scale-110">
+                    <CameraIcon className="w-6 h-6 text-gray-700" />
+                </label>
+                <input
+                    id="main-photo-upload"
+                    type="file"
+                    accept="image/*"
+                    className="sr-only"
+                    onChange={handleMainPhotoChange}
+                />
+            </>
+        )}
       </div>
       
       <div className="p-6 -mt-16">
@@ -394,7 +426,7 @@ const ProfileView: React.FC = () => {
                   <div className="flex items-center gap-2">
                       <PetalIcon className="w-8 h-8" />
                       <div>
-                          <span className="text-2xl font-bold text-gray-800">{profile.petalBalance}</span>
+                          <span className="text-2xl font-bold text-gray-800">{(isEditing ? editedProfile : profile).petalBalance}</span>
                           <span className="text-sm text-gray-600 ms-1">{t('profile.petals.petals')}</span>
                       </div>
                   </div>
@@ -423,7 +455,7 @@ const ProfileView: React.FC = () => {
                   <div className="flex items-center gap-2">
                       <FlowerIcon className="w-8 h-8" />
                       <div>
-                          <span className="text-2xl font-bold text-gray-800">{profile.flowerBalance}</span>
+                          <span className="text-2xl font-bold text-gray-800">{(isEditing ? editedProfile : profile).flowerBalance}</span>
                           <span className="text-sm text-gray-600 ms-1">{t('profile.flowers.flowers')}</span>
                       </div>
                   </div>
@@ -435,9 +467,9 @@ const ProfileView: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-2 gap-4 my-6">
-            {profile.photos.slice(1).map((photo, index) => (
-              <div key={index} className="aspect-square rounded-lg overflow-hidden">
-                <img src={photo} alt={`${profile.name} ${index + 2}`} className="w-full h-full object-cover" />
+            {(isEditing ? editedProfile.photos : profile.photos).slice(1).map((photo, index) => (
+              <div key={index} className="aspect-square rounded-lg overflow-hidden relative group">
+                <img src={photo} alt={`${(isEditing ? editedProfile.name : profile.name)} ${index + 2}`} className="w-full h-full object-cover" />
               </div>
             ))}
           </div>
@@ -457,9 +489,12 @@ const ProfileView: React.FC = () => {
                     <button onClick={handleEditToggle} className="flex-1 bg-gray-200 text-gray-800 font-bold py-3 rounded-lg hover:bg-gray-300 transition">
                       {t('profile.editProfile')}
                     </button>
-                    <button className="flex-1 bg-gray-200 text-gray-800 font-bold py-3 rounded-lg hover:bg-gray-300 transition">
-                      {t('profile.settings')}
-                    </button>
+                    {onNavigateAdmin && (
+                      <button onClick={onNavigateAdmin} className="flex-1 bg-gradient-to-r from-gray-800 to-gray-700 text-white font-bold py-3 rounded-lg hover:from-gray-900 hover:to-gray-800 transition flex items-center justify-center gap-2 shadow-md">
+                        <ShieldIcon className="w-5 h-5 text-rose-200" />
+                        <span>Jardinier</span>
+                      </button>
+                    )}
                 </>
             )}
           </div>

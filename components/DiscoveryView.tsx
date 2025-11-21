@@ -1,76 +1,228 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+
+import * as React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { UserProfile } from '../types';
-import { HeartIcon, XIcon, StarIcon, FlowerIcon, PhoneIcon, CheckIcon, UndoIcon } from './Icons';
-import { useTranslation } from '../hooks/useTranslation';
+import { HeartIcon, XIcon, StarIcon, FlowerIcon, PhoneIcon, CheckIcon, UndoIcon, PetalIcon, SlidersIcon } from './Icons';
+import { useTranslation } from '../contexts/LanguageContext';
 
 const mockProfiles: UserProfile[] = [
-  { id: 1, name: 'Chloé', age: 26, bio: 'Loves hiking, art galleries, and trying new recipes. Looking for a genuine connection.', interests: ['Hiking', 'Art', 'Cooking'], photos: ['https://picsum.photos/seed/woman1/800/1200', 'https://picsum.photos/seed/w1p2/800/1200', 'https://picsum.photos/seed/w1p3/800/1200'], distance: 5, flowerBalance: 15 },
-  { id: 2, name: 'Lucas', age: 29, bio: 'Software engineer by day, musician by night. My dog is my best friend. Let\'s grab a coffee.', interests: ['Music', 'Dogs', 'Tech'], photos: ['https://picsum.photos/seed/man1/800/1200', 'https://picsum.photos/seed/m1p2/800/1200'], distance: 2, flowerBalance: 40 },
-  { id: 3, name: 'Jasmine', age: 24, bio: 'Just moved to the city! Exploring every corner. Big foodie and film enthusiast.', interests: ['Food', 'Movies', 'Travel'], photos: ['https://picsum.photos/seed/woman2/800/1200', 'https://picsum.photos/seed/w2p2/800/1200', 'https://picsum.photos/seed/w2p3/800/1200', 'https://picsum.photos/seed/w2p4/800/1200'], distance: 10, flowerBalance: 5 },
-  { id: 4, name: 'Théo', age: 27, bio: 'Fitness enthusiast and bookworm. Believer in balancing mind and body.', interests: ['Fitness', 'Reading', 'Philosophy'], photos: ['https://picsum.photos/seed/man2/800/1200'], distance: 8, flowerBalance: 110 },
-  { id: 5, name: 'Inès', age: 30, bio: 'Entrepreneur with a passion for sustainability and travel. Searching for an adventure partner.', interests: ['Business', 'Sustainability', 'Travel'], photos: ['https://picsum.photos/seed/woman3/800/1200', 'https://picsum.photos/seed/w3p2/800/1200'], distance: 3, flowerBalance: 20 },
+  { id: 1, name: 'Chloé', age: 26, bio: 'Loves hiking, art galleries, and trying new recipes. Looking for a genuine connection.', interests: ['Randonnée', 'Art', 'Cuisine'], photos: ['https://picsum.photos/seed/woman1/800/1200', 'https://picsum.photos/seed/w1p2/800/1200', 'https://picsum.photos/seed/w1p3/800/1200'], distance: 5, flowerBalance: 15 },
+  { id: 2, name: 'Lucas', age: 29, bio: 'Software engineer by day, musician by night. My dog is my best friend. Let\'s grab a coffee.', interests: ['Musique', 'Animaux', 'Technologie'], photos: ['https://picsum.photos/seed/man1/800/1200', 'https://picsum.photos/seed/m1p2/800/1200'], distance: 2, flowerBalance: 40 },
+  { id: 3, name: 'Jasmine', age: 24, bio: 'Just moved to the city! Exploring every corner. Big foodie and film enthusiast.', interests: ['Cuisine', 'Cinéma', 'Voyages'], photos: ['https://picsum.photos/seed/woman2/800/1200', 'https://picsum.photos/seed/w2p2/800/1200', 'https://picsum.photos/seed/w2p3/800/1200', 'https://picsum.photos/seed/w2p4/800/1200'], distance: 10, flowerBalance: 5 },
+  { id: 4, name: 'Théo', age: 27, bio: 'Fitness enthusiast and bookworm. Believer in balancing mind and body.', interests: ['Sport', 'Lecture', 'Philosophie'], photos: ['https://picsum.photos/seed/man2/800/1200'], distance: 8, flowerBalance: 110 },
+  { id: 5, name: 'Inès', age: 30, bio: 'Entrepreneur with a passion for sustainability and travel. Searching for an adventure partner.', interests: ['Bénévolat', 'Voyages'], photos: ['https://picsum.photos/seed/woman3/800/1200', 'https://picsum.photos/seed/w3p2/800/1200'], distance: 3, flowerBalance: 20 },
 ];
+
+const allInterests = [
+    'Musique', 'Cinéma', 'Voyages', 'Cuisine', 'Sport', 'Lecture', 'Art', 'Danse',
+    'Photographie', 'Randonnée', 'Jeux de société', 'Technologie', 'Animaux', 'Nature',
+    'Bénévolat', 'Théâtre', 'Concerts', 'Festivals', 'Mode', 'Histoire', 'Politique',
+    'Science', 'Philosophie', 'Bricolage', 'Jardinage', 'Yoga', 'Méditation',
+    'Langues étrangères', 'Jeux vidéo', 'Écriture'
+];
+
+interface DiscoveryFilters {
+  distance: number;
+  interests: string[];
+}
+
+const defaultFilters: DiscoveryFilters = {
+  distance: 100,
+  interests: [],
+};
+
 
 const SWIPE_THRESHOLD = 100;
 const LIFT_THRESHOLD = -60;
 const ANIMATION_DURATION = 300;
 
-const ProfileDetailModal: React.FC<{ profile: UserProfile; onClose: () => void; }> = ({ profile, onClose }) => {
+
+const FilterModal: React.FC<{
+    onClose: () => void;
+    onApplyFilters: (filters: DiscoveryFilters) => void;
+    currentFilters: DiscoveryFilters;
+}> = ({ onClose, onApplyFilters, currentFilters }) => {
     const { t } = useTranslation();
+    const [tempFilters, setTempFilters] = React.useState<DiscoveryFilters>(currentFilters);
+
+    const handleInterestToggle = (interest: string) => {
+        setTempFilters(prev => {
+            const newInterests = prev.interests.includes(interest)
+                ? prev.interests.filter(i => i !== interest)
+                : [...prev.interests, interest];
+            return { ...prev, interests: newInterests };
+        });
+    };
+
+    const handleClear = () => {
+        setTempFilters(defaultFilters);
+    };
+
+    const handleApply = () => {
+        onApplyFilters(tempFilters);
+    };
+
     return (
         <motion.div
-            className="fixed inset-0 bg-black/60 z-30 flex justify-center items-center p-4"
+            className="fixed inset-0 bg-black/50 z-50 flex justify-end flex-col"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
         >
             <motion.div
-                className="relative w-full max-w-sm h-[85vh] bg-white rounded-2xl overflow-hidden shadow-2xl"
-                initial={{ scale: 0.9, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                className="bg-white rounded-t-2xl w-full h-[85vh] flex flex-col"
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "100%" }}
+                transition={{ type: "spring", stiffness: 400, damping: 40 }}
                 onClick={e => e.stopPropagation()}
             >
-                <div className="h-full w-full overflow-y-auto">
-                    {/* Photo Gallery */}
-                    <div className="grid grid-cols-2 gap-2 p-2">
-                        {profile.photos.map((photo, index) => (
-                            <div
-                                key={index}
-                                className={`rounded-xl overflow-hidden ${
-                                    index === 0 ? 'col-span-2 aspect-[4/5]' : 'aspect-square'
-                                }`}
-                            >
-                                <img src={photo} alt={`${profile.name} photo ${index + 1}`} className="w-full h-full object-cover" />
-                            </div>
-                        ))}
-                    </div>
-                    
-                    {/* Details */}
-                    <div className="p-6 pt-4">
-                        <h2 className="font-display text-4xl font-bold">{profile.name}, {profile.age}</h2>
-                        <p className="mt-4 text-lg text-gray-700">{profile.bio}</p>
-                        
-                        <div className="mt-6">
-                            <h3 className="font-semibold text-lg text-gray-800">{t('discovery.interests')}</h3>
-                            <div className="flex flex-wrap gap-2 mt-2">
-                                {profile.interests.map(interest => (
-                                    <span key={interest} className="bg-rose-100 text-rose-800 text-sm font-medium px-3 py-1 rounded-full">{interest}</span>
-                                ))}
-                            </div>
+                <header className="p-4 border-b flex items-center justify-between">
+                    <h2 className="font-display text-2xl font-bold">{t('profile.settings')}</h2>
+                    <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600"><XIcon className="w-6 h-6" /></button>
+                </header>
+                
+                <div className="flex-grow p-6 overflow-y-auto">
+                    <div className="mb-8">
+                        <div className="flex justify-between items-center mb-3">
+                            <label className="font-semibold text-lg text-gray-800">{t('events.detail.location')}</label>
+                            <span className="font-semibold text-rose-500">{t('onboarding.city.distanceUnit', { distance: tempFilters.distance })}</span>
                         </div>
-                         <p className="text-sm text-gray-500 mt-6">{t('common.kmAway', { distance: profile.distance })}</p>
+                        <input
+                            type="range"
+                            min="1"
+                            max="100"
+                            value={tempFilters.distance}
+                            onChange={(e) => setTempFilters(prev => ({...prev, distance: parseInt(e.target.value, 10)}))}
+                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-rose-500"
+                        />
+                    </div>
+                    <div>
+                         <h3 className="font-semibold text-lg text-gray-800 mb-3">{t('profile.interests')}</h3>
+                         <div className="flex flex-wrap gap-3">
+                            {allInterests.map(interest => {
+                                const isSelected = tempFilters.interests.includes(interest);
+                                return (
+                                    <button
+                                        key={interest}
+                                        onClick={() => handleInterestToggle(interest)}
+                                        className={`px-4 py-2 rounded-full font-semibold border-2 transition-colors ${isSelected ? 'bg-rose-500 text-white border-rose-500' : 'bg-white text-gray-700 border-gray-300 hover:border-gray-400'}`}
+                                    >
+                                        {interest}
+                                    </button>
+                                );
+                            })}
+                        </div>
                     </div>
                 </div>
-                
-                <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/30 text-white rounded-full hover:bg-black/50 transition-colors focus:outline-none z-10">
-                    <XIcon className="w-6 h-6" />
-                </button>
+
+                <footer className="p-4 border-t flex gap-4 bg-white">
+                    <button onClick={handleClear} className="flex-1 py-3 px-4 rounded-lg text-gray-700 bg-gray-200 font-semibold hover:bg-gray-300 transition">{t('events.filter.clear')}</button>
+                    <button onClick={handleApply} className="flex-1 py-3 px-4 rounded-lg text-white bg-rose-500 font-semibold hover:bg-rose-600 transition">{t('events.filter.apply')}</button>
+                </footer>
             </motion.div>
         </motion.div>
+    );
+};
+
+const ExpandedPhotoModal: React.FC<{ photo: string; onClose: () => void }> = ({ photo, onClose }) => (
+    <motion.div
+        className="fixed inset-0 z-[60] bg-black flex justify-center items-center"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+    >
+        <motion.div 
+            className="relative w-full h-full flex items-center justify-center p-4"
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0.9 }}
+        >
+           <img
+                src={photo}
+                alt="Expanded"
+                className="max-w-full max-h-full object-contain drop-shadow-2xl"
+            />
+        </motion.div>
+        <button
+            className="absolute top-4 right-4 p-2 bg-white/10 text-white rounded-full backdrop-blur-md hover:bg-white/20 transition z-50"
+            onClick={(e) => {
+                e.stopPropagation();
+                onClose();
+            }}
+        >
+            <XIcon className="w-8 h-8" />
+        </button>
+    </motion.div>
+);
+
+const ProfileDetailModal: React.FC<{ profile: UserProfile; onClose: () => void; }> = ({ profile, onClose }) => {
+    const { t } = useTranslation();
+    const [expandedPhoto, setExpandedPhoto] = React.useState<string | null>(null);
+
+    return (
+        <>
+            <motion.div
+                className="fixed inset-0 bg-black/60 z-30 flex justify-center items-center p-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={onClose}
+            >
+                <motion.div
+                    className="relative w-full max-w-sm h-[85vh] bg-white rounded-2xl overflow-hidden shadow-2xl"
+                    initial={{ scale: 0.9, y: 20 }}
+                    animate={{ scale: 1, y: 0 }}
+                    exit={{ scale: 0.9, opacity: 0 }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    onClick={e => e.stopPropagation()}
+                >
+                    <div className="h-full w-full overflow-y-auto">
+                        {/* Photo Gallery */}
+                        <div className="grid grid-cols-2 gap-2 p-2">
+                            {profile.photos.map((photo, index) => (
+                                <div
+                                    key={index}
+                                    className={`rounded-xl overflow-hidden cursor-zoom-in ${
+                                        index === 0 ? 'col-span-2 aspect-[4/5]' : 'aspect-square'
+                                    }`}
+                                    onClick={() => setExpandedPhoto(photo)}
+                                >
+                                    <img src={photo} alt={`${profile.name} photo ${index + 1}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+                                </div>
+                            ))}
+                        </div>
+                        
+                        {/* Details */}
+                        <div className="p-6 pt-4">
+                            <h2 className="font-display text-4xl font-bold">{profile.name}, {profile.age}</h2>
+                            <p className="mt-4 text-lg text-gray-700">{profile.bio}</p>
+                            
+                            <div className="mt-6">
+                                <h3 className="font-semibold text-lg text-gray-800">{t('discovery.interests')}</h3>
+                                <div className="flex flex-wrap gap-2 mt-2">
+                                    {profile.interests.map(interest => (
+                                        <span key={interest} className="bg-rose-100 text-rose-800 text-sm font-medium px-3 py-1 rounded-full">{interest}</span>
+                                    ))}
+                                </div>
+                            </div>
+                             <p className="text-sm text-gray-500 mt-6">{t('common.kmAway', { distance: profile.distance })}</p>
+                        </div>
+                    </div>
+                    
+                    <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-black/30 text-white rounded-full hover:bg-black/50 transition-colors focus:outline-none z-10">
+                        <XIcon className="w-6 h-6" />
+                    </button>
+                </motion.div>
+            </motion.div>
+            <AnimatePresence>
+                {expandedPhoto && (
+                    <ExpandedPhotoModal photo={expandedPhoto} onClose={() => setExpandedPhoto(null)} />
+                )}
+            </AnimatePresence>
+        </>
     );
 };
 
@@ -82,7 +234,7 @@ const SendFlowerModal: React.FC<{
     sendingState: 'idle' | 'sending' | 'sent';
 }> = ({ recipientName, currentUserBalance, onClose, onSend, sendingState }) => {
     const { t } = useTranslation();
-    const [amount, setAmount] = useState(1);
+    const [amount, setAmount] = React.useState(1);
     const amounts = [1, 5, 10];
 
     const handleSend = () => {
@@ -161,16 +313,20 @@ const SendFlowerModal: React.FC<{
 
 const DiscoveryView: React.FC = () => {
   const { t } = useTranslation();
-  const [profiles, setProfiles] = useState(mockProfiles);
-  const [history, setHistory] = useState<UserProfile[]>([]);
-  const [selectedProfile, setSelectedProfile] = useState<UserProfile | null>(null);
-  const [cardStyle, setCardStyle] = useState<React.CSSProperties>({});
-  const [isLifted, setIsLifted] = useState(false);
-  const [currentUserFlowerBalance, setCurrentUserFlowerBalance] = useState(250);
-  const [showSendFlowerModal, setShowSendFlowerModal] = useState(false);
-  const [sendingState, setSendingState] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [profiles, setProfiles] = React.useState(mockProfiles);
+  const [history, setHistory] = React.useState<UserProfile[]>([]);
+  const [selectedProfile, setSelectedProfile] = React.useState<UserProfile | null>(null);
+  const [cardStyle, setCardStyle] = React.useState<React.CSSProperties>({});
+  const [isLifted, setIsLifted] = React.useState(false);
+  const [currentUserFlowerBalance, setCurrentUserFlowerBalance] = React.useState(125);
+  const [currentUserPetalBalance, setCurrentUserPetalBalance] = React.useState(500);
+  const [showSendFlowerModal, setShowSendFlowerModal] = React.useState(false);
+  const [sendingState, setSendingState] = React.useState<'idle' | 'sending' | 'sent'>('idle');
   
-  const dragState = useRef({
+  const [filters, setFilters] = React.useState<DiscoveryFilters>(defaultFilters);
+  const [isFilterModalOpen, setIsFilterModalOpen] = React.useState(false);
+  
+  const dragState = React.useRef({
     isDragging: false,
     startX: 0,
     startY: 0,
@@ -178,9 +334,9 @@ const DiscoveryView: React.FC = () => {
     deltaY: 0,
   }).current;
   
-  const cardRef = useRef<HTMLDivElement>(null);
+  const cardRef = React.useRef<HTMLDivElement>(null);
 
-  const advanceQueue = useCallback((swipedProfile: UserProfile, swipeType: 'action' | 'gift') => {
+  const advanceQueue = React.useCallback((swipedProfile: UserProfile, swipeType: 'action' | 'gift') => {
     if (swipeType === 'action') {
         setHistory(h => [swipedProfile, ...h]);
     }
@@ -188,7 +344,7 @@ const DiscoveryView: React.FC = () => {
     setIsLifted(false);
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     dragState.isDragging = false;
     dragState.deltaX = 0;
     dragState.deltaY = 0;
@@ -198,7 +354,7 @@ const DiscoveryView: React.FC = () => {
     });
   }, [profiles, dragState]);
 
-  const handleSwipe = useCallback((direction: 'left' | 'right' | 'up') => {
+  const handleSwipe = React.useCallback((direction: 'left' | 'right' | 'up') => {
     const swipedProfile = profiles[0];
     if (!swipedProfile) return;
 
@@ -245,7 +401,7 @@ const DiscoveryView: React.FC = () => {
     window.addEventListener('touchend', handleDragEnd);
   };
   
-  const handleDragMove = useCallback((e: MouseEvent | TouchEvent) => {
+  const handleDragMove = React.useCallback((e: MouseEvent | TouchEvent) => {
     if (!dragState.isDragging) return;
     
     const pageX = 'touches' in e ? e.touches[0].pageX : e.pageX;
@@ -261,7 +417,7 @@ const DiscoveryView: React.FC = () => {
     });
   }, [dragState]);
 
-  const handleDragEnd = useCallback(() => {
+  const handleDragEnd = React.useCallback(() => {
     if (!dragState.isDragging) return;
     dragState.isDragging = false;
 
@@ -328,6 +484,27 @@ const DiscoveryView: React.FC = () => {
     setProfiles(prev => [lastProfile, ...prev]);
   };
 
+  const handleApplyFilters = React.useCallback((newFilters: DiscoveryFilters) => {
+    setFilters(newFilters);
+    const swipedIds = new Set(history.map(p => p.id));
+
+    const newProfileQueue = mockProfiles.filter(p => {
+        if (swipedIds.has(p.id)) return false;
+
+        const distanceMatch = p.distance <= newFilters.distance;
+        const interestMatch = newFilters.interests.length === 0 || p.interests.some(interest => newFilters.interests.includes(interest));
+        
+        return distanceMatch && interestMatch;
+    });
+
+    setProfiles(newProfileQueue);
+    setIsFilterModalOpen(false);
+  }, [history]);
+
+  const areFiltersActive = React.useMemo(() => 
+    filters.distance !== defaultFilters.distance || filters.interests.length > 0,
+  [filters]);
+
   const currentProfile = profiles[0];
   const nextProfile = profiles[1];
 
@@ -338,17 +515,30 @@ const DiscoveryView: React.FC = () => {
   
   return (
     <div className="h-full w-full flex flex-col items-center p-4 pt-4">
-        <div className="mb-4 flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-md">
-            <FlowerIcon className="w-6 h-6 text-rose-500" />
-            <span className="font-bold text-lg text-gray-800">{currentUserFlowerBalance}</span>
-            <span className="text-sm text-gray-500 -ml-1">{t('common.flowers')}</span>
-       </div>
+        <div className="mb-4 flex items-center justify-between w-full max-w-sm">
+             <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-md">
+                <PetalIcon className="w-6 h-6 text-rose-500" />
+                <span className="font-bold text-lg text-gray-800">{currentUserPetalBalance}</span>
+                <span className="text-sm text-gray-500 -ml-1">{t('common.petals')}</span>
+           </div>
+           <button 
+                onClick={() => setIsFilterModalOpen(true)} 
+                className="relative p-3 bg-white/80 backdrop-blur-sm rounded-full shadow-md text-gray-600 hover:text-rose-500 transition-colors"
+                aria-label={t('profile.settings')}
+            >
+                <SlidersIcon className="w-6 h-6" />
+                {areFiltersActive && <div className="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full border-2 border-white" />}
+            </button>
+        </div>
 
        <div className="relative w-full max-w-sm h-[70vh] flex-shrink-0">
           {!currentProfile ? (
-            <div className="h-full w-full flex flex-col justify-center items-center bg-gray-100 rounded-2xl">
+            <div className="h-full w-full flex flex-col justify-center items-center bg-gray-100 rounded-2xl text-center p-4">
               <h3 className="text-2xl font-bold text-gray-700">{t('discovery.noProfiles.title')}</h3>
               <p className="text-gray-500 mt-2">{t('discovery.noProfiles.subtitle')}</p>
+              <button onClick={() => handleApplyFilters(defaultFilters)} className="mt-6 bg-rose-500 text-white font-semibold py-2 px-5 rounded-full">
+                {t('events.filter.clear')}
+              </button>
             </div>
           ) : (
             <>
@@ -457,6 +647,15 @@ const DiscoveryView: React.FC = () => {
                 }}
                 onSend={handleSendFlowers}
                 sendingState={sendingState}
+            />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {isFilterModalOpen && (
+            <FilterModal
+                onClose={() => setIsFilterModalOpen(false)}
+                onApplyFilters={handleApplyFilters}
+                currentFilters={filters}
             />
         )}
       </AnimatePresence>

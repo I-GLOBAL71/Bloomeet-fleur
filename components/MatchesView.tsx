@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+
+import * as React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Match, Message } from '../types';
 import ChatView from './ChatView';
-import { useTranslation } from '../hooks/useTranslation';
+import { useTranslation } from '../contexts/LanguageContext';
 
 const CURRENT_USER_ID = 99; // Mock current user
 
@@ -45,9 +46,9 @@ const initialMatches: Match[] = [
 
 const MatchesView: React.FC = () => {
   const { t } = useTranslation();
-  const [matches, setMatches] = useState<Match[]>(initialMatches);
-  const [selectedChat, setSelectedChat] = useState<Match | null>(null);
-  const [currentUserFlowerBalance, setCurrentUserFlowerBalance] = useState(250);
+  const [matches, setMatches] = React.useState<Match[]>(initialMatches);
+  const [selectedChat, setSelectedChat] = React.useState<Match | null>(null);
+  const [currentUserFlowerBalance, setCurrentUserFlowerBalance] = React.useState(250);
 
   const handleUpdateMessages = (matchId: number, newMessages: Message[]) => {
     const updatedMatches = matches.map(match =>

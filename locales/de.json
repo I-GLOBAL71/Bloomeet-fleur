@@ -46,7 +46,7 @@
       "emptyBody": "Der Verlauf deiner gesendeten Blumen wird hier angezeigt."
     },
     "editProfile": "Profil bearbeiten",
-    "settings": "Einstellungen"
+    "settings": "Filter"
   },
     "common": {
     "cancel": "Abbrechen",
@@ -109,7 +109,8 @@
       "title": "Wo wohnst du?",
       "subtitle": "Dies hilft uns, dich mit Leuten in der Nähe zu verbinden.",
       "placeholder": "Gib deine Stadt, dein Dorf ein...",
-      "fetchError": "Fehler beim Abrufen der Vorschläge."
+      "fetchError": "Fehler beim Abrufen der Vorschläge.",
+      "distanceUnit": "Bis zu {distance} km"
     },
     "phone": {
       "title": "Bestätige deine Nummer",
@@ -158,7 +159,7 @@
     "requestContact": "Kontakt anfordern",
     "noProfiles": {
       "title": "Das war's für den Moment!",
-      "subtitle": "Schau später wieder vorbei, um neue Leute zu sehen."
+      "subtitle": "Passe deine Filter an oder schau später wieder vorbei, um neue Leute zu sehen."
     }
   },
   "likes": {
@@ -186,6 +187,10 @@
   "events": {
     "title": "Events",
     "create": "Erstellen",
+    "filter": {
+      "clear": "Löschen",
+      "apply": "Filter anwenden"
+    },
     "dashboard": {
       "title": "Dashboard",
       "created": "Erstellte Events",

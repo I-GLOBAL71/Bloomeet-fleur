@@ -46,7 +46,7 @@
       "emptyBody": "L'historique de vos fleurs envoyées apparaîtra ici."
     },
     "editProfile": "Modifier le Profil",
-    "settings": "Paramètres"
+    "settings": "Filtres"
   },
   "common": {
     "cancel": "Annuler",
@@ -109,7 +109,8 @@
       "title": "Où habitez-vous ?",
       "subtitle": "Cette information nous aide à vous mettre en relation avec des personnes proches.",
       "placeholder": "Entrez votre ville, village...",
-      "fetchError": "Erreur lors de la récupération des suggestions."
+      "fetchError": "Erreur lors de la récupération des suggestions.",
+      "distanceUnit": "Jusqu'à {distance} km"
     },
     "phone": {
       "title": "Vérifiez votre numéro",
@@ -158,7 +159,7 @@
     "requestContact": "Demander le contact",
     "noProfiles": {
       "title": "C'est tout pour le moment !",
-      "subtitle": "Revenez plus tard pour découvrir de nouvelles personnes."
+      "subtitle": "Modifiez vos filtres ou revenez plus tard."
     }
   },
   "likes": {
@@ -186,6 +187,10 @@
   "events": {
     "title": "Événements",
     "create": "Créer",
+    "filter": {
+      "clear": "Effacer",
+      "apply": "Appliquer les filtres"
+    },
     "dashboard": {
       "title": "Tableau de bord",
       "created": "Événements créés",

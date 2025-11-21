@@ -46,7 +46,7 @@
       "emptyBody": "The history of your sent flowers will appear here."
     },
     "editProfile": "Edit Profile",
-    "settings": "Settings"
+    "settings": "Filters"
   },
   "common": {
     "cancel": "Cancel",
@@ -109,7 +109,8 @@
       "title": "Where do you live?",
       "subtitle": "This helps us connect you with people nearby.",
       "placeholder": "Enter your city, village...",
-      "fetchError": "Failed to fetch suggestions."
+      "fetchError": "Failed to fetch suggestions.",
+      "distanceUnit": "Up to {distance} km"
     },
     "phone": {
       "title": "Verify your number",
@@ -158,7 +159,7 @@
     "requestContact": "Request contact info",
     "noProfiles": {
       "title": "That's everyone for now!",
-      "subtitle": "Check back later for new people."
+      "subtitle": "Adjust your filters or check back later for new people."
     }
   },
   "likes": {
@@ -186,6 +187,10 @@
   "events": {
     "title": "Events",
     "create": "Create",
+    "filter": {
+      "clear": "Clear",
+      "apply": "Apply Filters"
+    },
     "dashboard": {
       "title": "Dashboard",
       "created": "Events Created",

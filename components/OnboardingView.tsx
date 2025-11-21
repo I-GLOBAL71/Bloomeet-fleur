@@ -1,10 +1,9 @@
 
-
-import React, { useState, useMemo, useCallback, ChangeEvent, useEffect, useRef } from 'react';
+import * as React from 'react';
 import { GoogleGenAI, Type } from "@google/genai";
 import { motion, AnimatePresence, Reorder } from 'framer-motion';
 import { SparklesIcon, HeartIcon, CameraIcon, PlusIcon, TrashIcon, CheckIcon, PartyPopperIcon, LightbulbIcon, SearchIcon, ChevronDownIcon, XIcon, GlobeIcon, LoaderIcon } from './Icons';
-import { useTranslation } from '../hooks/useTranslation';
+import { useTranslation } from '../contexts/LanguageContext';
 
 // --- DATA & TYPES ---
 
@@ -215,7 +214,7 @@ const WelcomeStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
 
 const NameStep: React.FC<{ onNext: (name: string) => void }> = ({ onNext }) => {
     const { t } = useTranslation();
-    const [name, setName] = useState('');
+    const [name, setName] = React.useState('');
     return (
         <motion.div className="w-full px-8" variants={stepVariants} initial="hidden" animate="visible" exit="exit">
             <h2 className="font-display text-3xl font-bold">{t('onboarding.name.title')}</h2>
@@ -240,8 +239,8 @@ const NameStep: React.FC<{ onNext: (name: string) => void }> = ({ onNext }) => {
 
 const BirthdateStep: React.FC<{ onNext: (date: string) => void }> = ({ onNext }) => {
     const { t } = useTranslation();
-    const [date, setDate] = useState('');
-    const [age, setAge] = useState<number | null>(null);
+    const [date, setDate] = React.useState('');
+    const [age, setAge] = React.useState<number | null>(null);
 
     const calculateAge = (birthdate: string) => {
         if (!birthdate) return null;
@@ -255,7 +254,7 @@ const BirthdateStep: React.FC<{ onNext: (date: string) => void }> = ({ onNext })
         return calculatedAge;
     };
     
-    const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newDate = e.target.value;
         setDate(newDate);
         setAge(calculateAge(newDate));
@@ -333,18 +332,16 @@ const OrientationStep: React.FC<{ onNext: (orientation: 'straight' | 'gay' | 'bi
     );
 };
 
-const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
-
 const CityStep: React.FC<{ onNext: (city: string) => void }> = ({ onNext }) => {
     const { t } = useTranslation();
-    const [city, setCity] = useState('');
-    const [suggestions, setSuggestions] = useState<string[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState('');
-    const suggestionsRef = useRef<HTMLDivElement>(null);
-    const [showSuggestions, setShowSuggestions] = useState(false);
+    const [city, setCity] = React.useState('');
+    const [suggestions, setSuggestions] = React.useState<string[]>([]);
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [error, setError] = React.useState('');
+    const suggestionsRef = React.useRef<HTMLDivElement>(null);
+    const [showSuggestions, setShowSuggestions] = React.useState(false);
 
-    const fetchSuggestions = useCallback(async (searchTerm: string) => {
+    const fetchSuggestions = React.useCallback(async (searchTerm: string) => {
         if (searchTerm.length < 3) {
             setSuggestions([]);
             return;
@@ -352,6 +349,7 @@ const CityStep: React.FC<{ onNext: (city: string) => void }> = ({ onNext }) => {
         setIsLoading(true);
         setError('');
         try {
+            const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
             const prompt = `You are a geography expert specializing in African localities.
 A user is searching for a city, village, or locality in Africa.
 Their current input is "${searchTerm}".
@@ -401,9 +399,9 @@ For "Lag", you might return ["Lagos, Nigeria", "Laghouat, Algeria"].
         }
     }, [t]);
 
-    const debouncedFetch = useMemo(() => debounce(fetchSuggestions, 500), [fetchSuggestions]);
+    const debouncedFetch = React.useMemo(() => debounce(fetchSuggestions, 500), [fetchSuggestions]);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setCity(value);
         setShowSuggestions(true);
@@ -416,7 +414,7 @@ For "Lag", you might return ["Lagos, Nigeria", "Laghouat, Algeria"].
         setShowSuggestions(false);
     };
     
-    useEffect(() => {
+    React.useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (suggestionsRef.current && !suggestionsRef.current.contains(event.target as Node)) {
                 setShowSuggestions(false);
@@ -478,13 +476,13 @@ For "Lag", you might return ["Lagos, Nigeria", "Laghouat, Algeria"].
 
 const PhotosStep: React.FC<{ onNext: (photos: { id: number; url: string | null }[]) => void }> = ({ onNext }) => {
     const { t } = useTranslation();
-    const [photos, setPhotos] = useState<{ id: number; url: string | null }[]>([
+    const [photos, setPhotos] = React.useState<{ id: number; url: string | null }[]>([
         { id: 1, url: null }, { id: 2, url: null },
         { id: 3, url: null }, { id: 4, url: null },
         { id: 5, url: null }, { id: 6, url: null }
     ]);
 
-    const handlePhotoUpload = (e: ChangeEvent<HTMLInputElement>, id: number) => {
+    const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
             const reader = new FileReader();
@@ -543,14 +541,15 @@ const PhotosStep: React.FC<{ onNext: (photos: { id: number; url: string | null }
 
 const BioStep: React.FC<{ onNext: (bio: string) => void, profileData: ProfileData }> = ({ onNext, profileData }) => {
     const { t } = useTranslation();
-    const [bio, setBio] = useState('');
-    const [isGenerating, setIsGenerating] = useState(false);
-    const [error, setError] = useState('');
+    const [bio, setBio] = React.useState('');
+    const [isGenerating, setIsGenerating] = React.useState(false);
+    const [error, setError] = React.useState('');
     
     const handleGenerateBio = async () => {
         setIsGenerating(true);
         setError('');
         try {
+            const ai = new GoogleGenAI({apiKey: process.env.API_KEY});
             const prompt = t('onboarding.bio.aiPrompt', {
                 name: profileData.name,
                 age: new Date().getFullYear() - new Date(profileData.birthdate).getFullYear(),
@@ -622,8 +621,8 @@ const BioStep: React.FC<{ onNext: (bio: string) => void, profileData: ProfileDat
 
 const InterestsStep: React.FC<{ onNext: (interests: string[]) => void }> = ({ onNext }) => {
     const { t } = useTranslation();
-    const [selected, setSelected] = useState<string[]>([]);
-    const [searchTerm, setSearchTerm] = useState('');
+    const [selected, setSelected] = React.useState<string[]>([]);
+    const [searchTerm, setSearchTerm] = React.useState('');
 
     const toggleInterest = (interest: string) => {
         if (selected.includes(interest)) {
@@ -676,18 +675,18 @@ const InterestsStep: React.FC<{ onNext: (interests: string[]) => void }> = ({ on
 
 const CountryCodePicker: React.FC<{ onSelect: (country: Country) => void; selectedCode: string }> = ({ onSelect, selectedCode }) => {
     const { t } = useTranslation();
-    const [isOpen, setIsOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
-    const wrapperRef = useRef<HTMLDivElement>(null);
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [searchTerm, setSearchTerm] = React.useState('');
+    const wrapperRef = React.useRef<HTMLDivElement>(null);
 
     const filteredCountries = countries.filter(c => 
         c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         c.dial_code.includes(searchTerm)
     );
     
-    const selectedCountry = useMemo(() => countries.find(c => c.dial_code === selectedCode), [selectedCode]);
+    const selectedCountry = React.useMemo(() => countries.find(c => c.dial_code === selectedCode), [selectedCode]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
                 setIsOpen(false);
@@ -748,10 +747,10 @@ const CountryCodePicker: React.FC<{ onSelect: (country: Country) => void; select
 
 const PhoneStep: React.FC<{ onNext: (phone: string, code: string) => void }> = ({ onNext }) => {
     const { t } = useTranslation();
-    const [phone, setPhone] = useState('');
-    const [countryCode, setCountryCode] = useState('+33'); // Default to France
+    const [phone, setPhone] = React.useState('');
+    const [countryCode, setCountryCode] = React.useState('+33'); // Default to France
     
-    const isValidPhone = useMemo(() => /^\d{7,15}$/.test(phone), [phone]);
+    const isValidPhone = React.useMemo(() => /^\d{7,15}$/.test(phone), [phone]);
 
     const handleContinue = () => {
         if(isValidPhone) {
@@ -824,8 +823,8 @@ interface OnboardingViewProps {
 }
 
 const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete }) => {
-  const [step, setStep] = useState(0);
-  const [profileData, setProfileData] = useState<ProfileData>({
+  const [step, setStep] = React.useState(0);
+  const [profileData, setProfileData] = React.useState<ProfileData>({
     name: '',
     birthdate: '',
     gender: '',
@@ -838,7 +837,7 @@ const OnboardingView: React.FC<OnboardingViewProps> = ({ onComplete }) => {
     countryCode: '+33'
   });
   
-  const handleNext = useCallback(<T extends keyof ProfileData>(key: T, value: ProfileData[T]) => {
+  const handleNext = React.useCallback(<T extends keyof ProfileData>(key: T, value: ProfileData[T]) => {
       setProfileData(prev => ({ ...prev, [key]: value }));
       setStep(s => s + 1);
   }, []);

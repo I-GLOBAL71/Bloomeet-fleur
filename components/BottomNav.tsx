@@ -1,5 +1,5 @@
 
-import React from 'react';
+import * as React from 'react';
 import { AppView } from '../types';
 import { CompassIcon, HeartIcon, MessageSquareIcon, UserIcon, CalendarIcon } from './Icons';
 

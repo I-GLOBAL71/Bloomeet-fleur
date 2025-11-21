@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+
+import * as React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UserProfile } from '../types';
 import { HeartIcon, LockIcon, PetalIcon, XIcon, MessageSquareIcon } from './Icons';
-import { useTranslation } from '../hooks/useTranslation';
+import { useTranslation } from '../contexts/LanguageContext';
 
 const mockLikedByUsers: UserProfile[] = [
   { id: 1, name: 'Amélie', age: 25, bio: 'Passionnée de voyages et de littérature.', interests: ['Voyage', 'Lecture'], photos: ['https://picsum.photos/seed/like1/800/1200'], distance: 8 },
@@ -140,10 +141,10 @@ const UnlockProfileModal: React.FC<{
 
 const LikesView: React.FC = () => {
     const { t } = useTranslation();
-    const [likers, setLikers] = useState<UserProfile[]>(mockLikedByUsers);
-    const [matchData, setMatchData] = useState<UserProfile | null>(null);
-    const [unlockingProfile, setUnlockingProfile] = useState<UserProfile | null>(null);
-    const [petalBalance, setPetalBalance] = useState(500);
+    const [likers, setLikers] = React.useState<UserProfile[]>(mockLikedByUsers);
+    const [matchData, setMatchData] = React.useState<UserProfile | null>(null);
+    const [unlockingProfile, setUnlockingProfile] = React.useState<UserProfile | null>(null);
+    const [petalBalance, setPetalBalance] = React.useState(500);
 
     const handleLikeBack = (profile: UserProfile) => {
         setMatchData(profile);

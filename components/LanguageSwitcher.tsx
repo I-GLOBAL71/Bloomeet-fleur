@@ -1,6 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+
+import * as React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useTranslation, supportedLanguages, findLanguage } from '../hooks/useTranslation';
+import { useTranslation } from '../contexts/LanguageContext';
+import { supportedLanguages, findLanguage } from '../contexts/language.config';
 import { GlobeIcon, CheckIcon } from './Icons';
 
 interface LanguageSwitcherProps {
@@ -8,11 +10,11 @@ interface LanguageSwitcherProps {
 }
 
 const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ as = 'button' }) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = React.useState(false);
     const { language, setLanguage, t } = useTranslation();
-    const wrapperRef = useRef<HTMLDivElement>(null);
+    const wrapperRef = React.useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
+    React.useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
                 setIsOpen(false);
@@ -69,7 +71,7 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ as = 'button' }) =>
                          <span className="text-2xl">{currentLang?.flag}</span>
                          {currentLang?.name}
                     </span>
-                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-gray-500"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
+                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6 text-gray-500"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg>
                 </button>
                  <AnimatePresence>
                     {isOpen && (

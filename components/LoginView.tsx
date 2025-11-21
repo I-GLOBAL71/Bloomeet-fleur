@@ -1,8 +1,8 @@
 
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GoogleIcon, LogoIcon, AtSignIcon, ArrowLeftIcon } from './Icons';
-import { useTranslation } from '../hooks/useTranslation';
+import { useTranslation } from '../contexts/LanguageContext';
 import LanguageSwitcher from './LanguageSwitcher';
 
 interface LoginViewProps {
@@ -18,10 +18,10 @@ const backgroundImages = [
 
 const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
   const { t } = useTranslation();
-  const [currentImage, setCurrentImage] = useState(0);
-  const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [view, setView] = useState<'options' | 'emailInput' | 'emailSent'>('options');
-  const [email, setEmail] = useState('');
+  const [currentImage, setCurrentImage] = React.useState(0);
+  const [currentWordIndex, setCurrentWordIndex] = React.useState(0);
+  const [view, setView] = React.useState<'options' | 'emailInput' | 'emailSent'>('options');
+  const [email, setEmail] = React.useState('');
 
   const inspiringWords = [
     t('login.word1'),
@@ -30,14 +30,14 @@ const LoginView: React.FC<LoginViewProps> = ({ onLogin }) => {
     t('login.word4'),
   ];
 
-  useEffect(() => {
+  React.useEffect(() => {
     const imageTimer = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % backgroundImages.length);
     }, 7000);
     return () => clearInterval(imageTimer);
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const wordTimer = setInterval(() => {
         setCurrentWordIndex(prev => (prev + 1) % inspiringWords.length);
     }, 3000);

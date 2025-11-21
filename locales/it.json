@@ -46,7 +46,7 @@
       "emptyBody": "La cronologia dei tuoi fiori inviati apparirà qui."
     },
     "editProfile": "Modifica Profilo",
-    "settings": "Impostazioni"
+    "settings": "Filtri"
   },
   "common": {
     "cancel": "Annulla",
@@ -109,7 +109,8 @@
       "title": "Dove vivi?",
       "subtitle": "Questo ci aiuta a connetterti con persone vicine.",
       "placeholder": "Inserisci la tua città, paese...",
-      "fetchError": "Errore nel recupero dei suggerimenti."
+      "fetchError": "Errore nel recupero dei suggerimenti.",
+      "distanceUnit": "Fino a {distance} km"
     },
     "phone": {
       "title": "Verifica il tuo numero",
@@ -158,7 +159,7 @@
     "requestContact": "Richiedi contatto",
     "noProfiles": {
       "title": "Per ora è tutto!",
-      "subtitle": "Torna più tardi per nuove persone."
+      "subtitle": "Modifica i filtri o torna più tardi per nuove persone."
     }
   },
   "likes": {
@@ -186,6 +187,10 @@
   "events": {
     "title": "Eventi",
     "create": "Crea",
+    "filter": {
+      "clear": "Pulisci",
+      "apply": "Applica Filtri"
+    },
     "dashboard": {
       "title": "Dashboard",
       "created": "Eventi Creati",

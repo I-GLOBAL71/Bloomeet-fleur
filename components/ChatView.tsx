@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+
+import * as React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { Match, Message } from '../types';
 import { ChevronLeftIcon, SendIcon, EmojiIcon, FlowerIcon, XIcon } from './Icons';
-import { useTranslation } from '../hooks/useTranslation';
+import { useTranslation } from '../contexts/LanguageContext';
 
 const CURRENT_USER_ID = 99;
 
@@ -17,7 +18,7 @@ const getEmojiCategories = (t: (key: string) => string) => [
 const EmojiPicker: React.FC<{ onSelect: (emoji: string) => void; }> = ({ onSelect }) => {
     const { t } = useTranslation();
     const emojiCategories = getEmojiCategories(t);
-    const [activeCategory, setActiveCategory] = useState(emojiCategories[0].name);
+    const [activeCategory, setActiveCategory] = React.useState(emojiCategories[0].name);
 
     return (
         <div className="h-full w-full flex flex-col bg-gray-100">
@@ -89,7 +90,7 @@ const SendFlowerModal: React.FC<{
     onSend: (amount: number) => void;
 }> = ({ recipientName, currentUserBalance, onClose, onSend }) => {
     const { t } = useTranslation();
-    const [amount, setAmount] = useState(1);
+    const [amount, setAmount] = React.useState(1);
     const amounts = [1, 5, 10];
 
     const handleSend = () => {
@@ -150,178 +151,126 @@ interface ChatViewProps {
 
 const ChatView: React.FC<ChatViewProps> = ({ match, onClose, onUpdateMessages, currentUserFlowerBalance, onUpdateFlowerBalance }) => {
     const { t } = useTranslation();
-    const [newMessage, setNewMessage] = useState('');
-    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-    const [showSendFlowerModal, setShowSendFlowerModal] = useState(false);
-    const messagesEndRef = useRef<HTMLDivElement>(null);
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [inputText, setInputText] = React.useState('');
+    const [messages, setMessages] = React.useState(match.messages);
+    const [showEmojiPicker, setShowEmojiPicker] = React.useState(false);
+    const [showFlowerModal, setShowFlowerModal] = React.useState(false);
+    const messagesEndRef = React.useRef<HTMLDivElement>(null);
 
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    };
+    React.useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [messages]);
 
-    useEffect(scrollToBottom, [match.messages]);
-    
-    useEffect(() => {
-        if(textareaRef.current) {
-            textareaRef.current.style.height = 'auto';
-            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-        }
-    }, [newMessage]);
+    const handleSendMessage = () => {
+        if (inputText.trim() === '') return;
 
-    const handleSend = () => {
-        if (newMessage.trim() === '') return;
-
-        const messageToSend: Message = {
+        const newMessage: Message = {
             id: Date.now(),
-            text: newMessage.trim(),
+            text: inputText.trim(),
             senderId: CURRENT_USER_ID,
-            timestamp: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
-            type: 'text',
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            type: 'text'
         };
 
-        const updatedMessages = [...match.messages, messageToSend];
+        const updatedMessages = [...messages, newMessage];
+        setMessages(updatedMessages);
         onUpdateMessages(match.id, updatedMessages);
-        setNewMessage('');
-        
-        // Simulate a reply
-        setTimeout(() => {
-            const replyMessage: Message = {
-                id: Date.now() + 1,
-                text: "C'est super intéressant ! Raconte-m'en plus.",
-                senderId: match.id,
-                timestamp: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
-                type: 'text',
-            };
-            onUpdateMessages(match.id, [...updatedMessages, replyMessage]);
-        }, 1500);
+        setInputText('');
+        setShowEmojiPicker(false);
     };
 
-    const handleSendFlowers = (amount: number) => {
+    const handleSendFlower = (amount: number) => {
         if (currentUserFlowerBalance >= amount) {
-            onUpdateFlowerBalance(currentUserFlowerBalance - amount);
-            
-            const giftMessage: Message = {
+            const newBalance = currentUserFlowerBalance - amount;
+            onUpdateFlowerBalance(newBalance);
+
+            const newGiftMessage: Message = {
                 id: Date.now(),
                 text: t('chat.giftSent', { amount, plural: amount > 1 ? 's' : '' }),
                 senderId: CURRENT_USER_ID,
-                timestamp: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+                timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 type: 'gift',
-                giftAmount: amount,
+                giftAmount: amount
             };
-
-            const updatedMessages = [...match.messages, giftMessage];
+            
+            const updatedMessages = [...messages, newGiftMessage];
+            setMessages(updatedMessages);
             onUpdateMessages(match.id, updatedMessages);
-            setShowSendFlowerModal(false);
-
-            // Simulate a reply to the gift
-            setTimeout(() => {
-                const replyMessage: Message = {
-                    id: Date.now() + 1,
-                    text: `Wow, merci beaucoup pour les fleurs ! 💐 C'est adorable !`,
-                    senderId: match.id,
-                    timestamp: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
-                    type: 'text',
-                };
-                onUpdateMessages(match.id, [...updatedMessages, replyMessage]);
-            }, 1500);
+            setShowFlowerModal(false);
         }
-    };
-
-    const handleEmojiSelect = (emoji: string) => {
-        setNewMessage(prev => prev + emoji);
-        textareaRef.current?.focus();
-    };
-
-    const handleEmojiToggle = () => {
-        if (!showEmojiPicker) {
-            textareaRef.current?.blur(); // Prevent keyboard from opening
-        }
-        setShowEmojiPicker(prev => !prev);
     };
 
     return (
         <motion.div
-            className="absolute inset-0 bg-white z-10 flex flex-col"
-            initial={{ x: '100%' }}
+            className="absolute inset-0 bg-white z-20 flex flex-col"
+            initial={{ x: "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'tween', ease: 'easeInOut', duration: 0.4 }}
+            exit={{ x: "100%" }}
+            transition={{ type: 'tween', ease: 'easeInOut', duration: 0.3 }}
         >
-            <header className="flex items-center p-3 border-b border-gray-200 bg-white/80 backdrop-blur-sm sticky top-0 z-10">
-                <button onClick={onClose} className="p-2 text-gray-600 hover:text-gray-900">
-                    <ChevronLeftIcon className="w-7 h-7" />
-                </button>
+            <header className="flex items-center p-3 border-b border-gray-200 bg-white/80 backdrop-blur-sm">
+                <button onClick={onClose} className="p-2 text-gray-600"><ChevronLeftIcon className="w-6 h-6" /></button>
                 <img src={match.avatar} alt={match.name} className="w-10 h-10 rounded-full object-cover ml-2" />
-                <h2 className="ml-3 font-bold text-lg">{match.name}</h2>
+                <div className="ml-3">
+                    <h2 className="font-bold text-lg">{match.name}</h2>
+                    {match.flowerBalance !== undefined && (
+                        <div className="flex items-center text-sm text-gray-500">
+                            <FlowerIcon className="w-4 h-4 mr-1"/>
+                            {match.flowerBalance}
+                        </div>
+                    )}
+                </div>
             </header>
 
-            <main className="flex-grow overflow-y-auto p-4">
-                <div className="flex flex-col gap-3">
-                    {match.messages.map((msg) => (
-                        <MessageBubble key={msg.id} message={msg} isOwnMessage={msg.senderId === CURRENT_USER_ID} />
-                    ))}
-                    <div ref={messagesEndRef} />
-                </div>
+            <main className="flex-grow p-4 overflow-y-auto bg-gray-50 flex flex-col space-y-4">
+                {messages.map(msg => (
+                    <MessageBubble key={msg.id} message={msg} isOwnMessage={msg.senderId === CURRENT_USER_ID} />
+                ))}
+                <div ref={messagesEndRef} />
             </main>
 
-            <div className="border-t border-gray-200 bg-white">
-                <div className="p-3">
-                    <div className="flex items-end gap-2 bg-gray-100 rounded-2xl p-2">
-                        <button
-                            onClick={handleEmojiToggle}
-                            className={`p-2 self-end rounded-full transition-colors ${showEmojiPicker ? 'bg-rose-200 text-rose-600' : 'text-gray-500 hover:bg-gray-200'}`}
-                        >
-                            <EmojiIcon className="w-6 h-6" />
-                        </button>
-                        <button
-                            onClick={() => setShowSendFlowerModal(true)}
-                            className="p-2 self-end rounded-full text-gray-500 hover:bg-gray-200 transition-colors"
-                        >
-                           <FlowerIcon className="w-6 h-6" />
-                        </button>
-                        <textarea
-                            ref={textareaRef}
-                            value={newMessage}
-                            onChange={(e) => setNewMessage(e.target.value)}
-                            onFocus={() => setShowEmojiPicker(false)}
-                            onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); } }}
-                            placeholder={t('chat.placeholder')}
-                            className="flex-grow bg-transparent focus:outline-none resize-none max-h-32 text-lg px-2"
-                            rows={1}
-                        />
-                        <button 
-                            onClick={handleSend}
-                            className="p-3 bg-rose-500 text-white rounded-full self-end disabled:bg-rose-300 transition-colors"
-                            disabled={!newMessage.trim()}
-                        >
-                            <SendIcon className="w-5 h-5" />
-                        </button>
-                    </div>
+            <footer className="bg-white border-t border-gray-200">
+                <div className="p-3 flex items-center space-x-2">
+                    <button onClick={() => setShowEmojiPicker(!showEmojiPicker)} className={`p-2 rounded-full transition-colors ${showEmojiPicker ? 'bg-rose-100 text-rose-500' : 'text-gray-500 hover:bg-gray-100'}`}>
+                        <EmojiIcon className="w-6 h-6" />
+                    </button>
+                    <button onClick={() => setShowFlowerModal(true)} className="p-2 text-gray-500 hover:bg-gray-100 rounded-full">
+                        <FlowerIcon className="w-6 h-6" />
+                    </button>
+                    <input
+                        type="text"
+                        value={inputText}
+                        onChange={(e) => setInputText(e.target.value)}
+                        onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                        onFocus={() => setShowEmojiPicker(false)}
+                        placeholder={t('chat.placeholder')}
+                        className="flex-grow bg-gray-100 rounded-full py-2 px-4 focus:outline-none focus:ring-2 focus:ring-rose-400"
+                    />
+                    <button onClick={handleSendMessage} className="p-3 bg-rose-500 text-white rounded-full shadow-md hover:bg-rose-600 transition-colors">
+                        <SendIcon className="w-5 h-5" />
+                    </button>
                 </div>
-            </div>
-
-            <AnimatePresence>
-                {showEmojiPicker && (
-                    <motion.div
-                        className="h-72 w-full"
-                        initial={{ height: 0 }}
-                        animate={{ height: "18rem" }}
-                        exit={{ height: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        style={{ overflow: 'hidden' }}
-                    >
-                        <EmojiPicker onSelect={handleEmojiSelect} />
-                    </motion.div>
-                )}
-            </AnimatePresence>
-            <AnimatePresence>
-                {showSendFlowerModal && (
+                <AnimatePresence>
+                    {showEmojiPicker && (
+                        <motion.div
+                            className="h-64"
+                            initial={{ height: 0 }}
+                            animate={{ height: '16rem' }}
+                            exit={{ height: 0 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            <EmojiPicker onSelect={(emoji) => setInputText(prev => prev + emoji)} />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </footer>
+             <AnimatePresence>
+                {showFlowerModal && (
                     <SendFlowerModal
                         recipientName={match.name}
                         currentUserBalance={currentUserFlowerBalance}
-                        onClose={() => setShowSendFlowerModal(false)}
-                        onSend={handleSendFlowers}
+                        onClose={() => setShowFlowerModal(false)}
+                        onSend={handleSendFlower}
                     />
                 )}
             </AnimatePresence>
